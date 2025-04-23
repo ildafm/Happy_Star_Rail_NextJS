@@ -175,8 +175,8 @@ export default function CountDownAnniversary() {
       <div className="flex items-end justify-center z-10">
         <div className="m-2 sm:m-5">
           <span
-            className="font-bold text-xl sm:text-5xl"
-            style={{ color: "#e1c8be" }}
+            className="text-[#e1c8be] font-bold text-xl sm:text-5xl"
+            // style={{ color: "#e1c8be" }}
           >
             {isAnniversaryNow ? "00" : timeLeft.days}
           </span>
@@ -184,8 +184,8 @@ export default function CountDownAnniversary() {
         </div>
         <div className="m-2 sm:m-5">
           <span
-            className="font-bold text-xl sm:text-5xl"
-            style={{ color: "#e1c8be" }}
+            className="text-[#e1c8be] font-bold text-xl sm:text-5xl"
+            // style={{ color: "#e1c8be" }}
           >
             {isAnniversaryNow
               ? "00"
@@ -195,8 +195,8 @@ export default function CountDownAnniversary() {
         </div>
         <div className="m-2 sm:m-5">
           <span
-            className="font-bold text-xl sm:text-5xl"
-            style={{ color: "#e1c8be" }}
+            className="text-[#e1c8be] font-bold text-xl sm:text-5xl"
+            // style={{ color: "#e1c8be" }}
           >
             {isAnniversaryNow
               ? "00"
@@ -206,8 +206,8 @@ export default function CountDownAnniversary() {
         </div>
         <div className="m-2 sm:m-5">
           <span
-            className="font-bold text-xl sm:text-5xl"
-            style={{ color: "#e1c8be" }}
+            className="text-[#e1c8be] font-bold text-xl sm:text-5xl"
+            // style={{ color: "#e1c8be" }}
           >
             {isAnniversaryNow
               ? "00"
