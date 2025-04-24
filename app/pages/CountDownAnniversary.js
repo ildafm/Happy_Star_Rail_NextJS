@@ -20,34 +20,19 @@ function getTimeLeft(targetDate) {
 }
 
 function getTargetDate() {
-  const today = new Date(); // Mendapatkan tanggal hari ini
-  today.setMonth(today.getMonth() + 1);
+  const today = new Date();
+  const targetMonth = 4; // April
+  const targetDay = 26;
 
-  // anniversary HSR adalah 26 April
-  const targetMonth = 4;
-  const targetDate = 26;
-  let targetYear = 2025;
+  const thisYear = today.getFullYear();
+  const targetThisYear = new Date(thisYear, targetMonth - 1, targetDay);
 
-  if (today.getMonth() < targetMonth) {
-    // jika bulan sekarang kurang dari targetMonth, maka targetYear adalah tahun sekarang
-    targetYear = today.getFullYear();
-  } else if (today.getMonth() == targetMonth) {
-    // jika bulan sekarang sama dengan targetMonth, maka cek tanggalnya
-    if (today.getDate() < targetDate) {
-      // jika tanggal sekarang kurang dari targetDate, maka maka targetYear adalah tahun sekarang
-      targetYear = today.getFullYear();
-    }
-  } else {
-    // jika bulan sekarang lebih dari targetMonth, maka targetYear adalah tahun depan
-    targetYear = today.getFullYear() + 1;
+  // Kalau sudah lewat, set ke tahun depan
+  if (today > targetThisYear) {
+    return new Date(thisYear + 1, targetMonth - 1, targetDay);
   }
-  const finalTargetDate = new Date(
-    targetYear,
-    targetMonth - 1, // bulan dimulai dari 0 jadi untuk menargetkan april harus dikurang 1
-    targetDate
-  );
 
-  return finalTargetDate;
+  return targetThisYear;
 }
 
 function getCurrentAnniversary() {
@@ -236,3 +221,40 @@ export default function CountDownAnniversary() {
     </div>
   );
 }
+
+// --------------------------------------------------------------------------------------------------------
+/*
+function getTargetDate() {
+  const today = new Date(); // Mendapatkan tanggal hari ini
+  today.setMonth(today.getMonth() + 1);
+
+  // anniversary HSR adalah 26 April
+  const targetMonth = 4;
+  const targetDate = 26;
+  let targetYear = 2025;
+
+  if (today.getMonth() < targetMonth) {
+    // jika bulan sekarang kurang dari targetMonth, maka targetYear adalah tahun sekarang
+    targetYear = today.getFullYear();
+  } else if (today.getMonth() == targetMonth) {
+    // jika bulan sekarang sama dengan targetMonth, maka cek tanggalnya
+    if (today.getDate() < targetDate) {
+      // jika tanggal sekarang kurang dari targetDate, maka maka targetYear adalah tahun sekarang
+      targetYear = today.getFullYear();
+    } else if (today.getDate() > targetDate) {
+      // jika tanggal sekarang lebih dari targetDate, maka targetYear adalah tahun depan
+      targetYear = today.getFullYear() + 1;
+    }
+  } else {
+    // jika bulan sekarang lebih dari targetMonth, maka targetYear adalah tahun depan
+    targetYear = today.getFullYear() + 1;
+  }
+  const finalTargetDate = new Date(
+    targetYear,
+    targetMonth - 1, // bulan dimulai dari 0 jadi untuk menargetkan april harus dikurang 1
+    targetDate
+  );
+
+  return finalTargetDate;
+}
+*/
