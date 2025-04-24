@@ -105,8 +105,7 @@ export default function CountDownAnniversary() {
     const now = new Date();
     const isTodayAnniversary =
       now.getMonth() === targetDate.getMonth() &&
-      now.getDate() === targetDate.getDate() &&
-      now.getMinutes() === targetDate.getMinutes();
+      now.getDate() === targetDate.getDate();
 
     if (isTodayAnniversary) {
       // console.log("Anniversary Now");
