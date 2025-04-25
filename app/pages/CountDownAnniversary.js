@@ -12,7 +12,7 @@ function getTimeLeft(targetDate) {
   let minutes = Math.floor((difference / 1000 / 60) % 60);
   let seconds = Math.floor((difference / 1000) % 60);
 
-  if (days > 0 && days < 10) {
+  if (days >= 0 && days < 10) {
     days = `0${days}`;
   }
 
