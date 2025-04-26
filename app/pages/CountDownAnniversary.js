@@ -35,7 +35,7 @@ function getTargetDate() {
   return targetThisYear;
 }
 
-function getCurrentAnniversary() {
+function getCurrentAnniversary(targetYear) {
   const getOrdinalSuffix = (n) => {
     const lastDigit = n % 10;
     const lastTwoDigits = n % 100;
@@ -57,8 +57,7 @@ function getCurrentAnniversary() {
   };
 
   const releaseDate = 2023;
-  const currentYear = new Date().getFullYear();
-  const currentAnniversary = currentYear - releaseDate;
+  const currentAnniversary = targetYear - releaseDate;
 
   const suffix = getOrdinalSuffix(currentAnniversary);
 
@@ -72,7 +71,7 @@ export default function CountDownAnniversary() {
   const [targetDate, setTargetDate] = useState(getTargetDate());
   const [timeLeft, setTimeLeft] = useState(getTimeLeft(targetDate));
   const [isAnniversaryNow, setIsAnniversaryNow] = useState(false); // ubah sesuai tanggal anniversary
-  const currentAnniversary = getCurrentAnniversary();
+  const currentAnniversary = getCurrentAnniversary(targetDate.getFullYear());
 
   useEffect(() => {
     const checkDateChange = setInterval(() => {
