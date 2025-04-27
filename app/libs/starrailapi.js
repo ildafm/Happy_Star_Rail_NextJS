@@ -22,7 +22,7 @@ import { CharacterIDs, CharacterQuery } from "star-rail-api";
 export async function getAllCharacters() {
   try {
     const query = new CharacterQuery();
-    const resp = await query.get();
+    const resp = await query.withImages().get();
     return resp;
   } catch (error) {
     console.error(error);

@@ -44,7 +44,7 @@ export default function Sidebar({ children }) {
                 name={"Home"}
                 link={"/honkaistarrail"}
                 icon={LayoutDashboard}
-                isActive={true}
+                // isActive={true}
               />
             </li>
             {/* characters */}
@@ -53,7 +53,7 @@ export default function Sidebar({ children }) {
                 name={"Characters"}
                 link="/honkaistarrail/characters"
                 icon={LayoutDashboard}
-                isActive={false}
+                // isActive={false}
                 useCount={3}
               />
             </li>
