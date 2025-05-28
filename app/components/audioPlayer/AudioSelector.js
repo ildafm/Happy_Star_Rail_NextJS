@@ -3,7 +3,7 @@ import React from "react";
 const audioList = {
   1: "Star Rail",
   2: "Faded Sun",
-  3: "Hope Is the Thing With Feather",
+  3: "Hope Is the Thing With Feathers",
   4: "Wildfire",
 };
 

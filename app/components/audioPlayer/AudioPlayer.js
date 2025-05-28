@@ -4,13 +4,17 @@ import React, { useState, useEffect, useRef } from "react";
 import AudioSelector from "./AudioSelector";
 
 export default function AudioPlayer() {
-  const [selectedAudio, setSelectedAudio] = useState("01 Star Rail.mp3"); // default music
+  const [selectedAudio, setSelectedAudio] = useState("01 Star Rail"); // default music
   const [isMuted, setIsMuted] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const audioRef = useRef(null);
 
-  const toggleMute = () => {
-    setIsMuted((prev) => !prev);
-    // console.log(selectedAudio);
+  //   const toggleMute = () => {
+  //     setIsMuted((prev) => !prev);
+  //   };
+
+  const togglePause = () => {
+    setIsPaused((prev) => !prev);
   };
 
   useEffect(() => {
@@ -20,24 +24,32 @@ export default function AudioPlayer() {
     }
   }, [selectedAudio]);
 
+  // pause setting
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.muted = isMuted;
+      if (isPaused) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
     }
-  }, [isMuted]);
+  }, [isPaused]);
+
+  //   muted setting
+  //   useEffect(() => {
+  //     if (audioRef.current) {
+  //       audioRef.current.muted = isMuted;
+  //     }
+  //   }, [isMuted]);
 
   return (
     <div className="absolute top-0 left-0 m-4 z-10">
       <div className="group relative flex items-center gap-2">
-        {/* button mute/unmute */}
+        {/* button pause/unpause */}
         <div>
-          <button onClick={toggleMute}>{isMuted ? "🔈" : "🔊"}</button>
+          {/* <button onClick={toggleMute}>{isMuted ? "🔈" : "🔊"}</button> */}
+          <button onClick={togglePause}>{isPaused ? "🔈" : "🔊"}</button>
         </div>
-
-        {/* audio selector */}
-        {/* <div className="hidden group-hover:block">
-          <AudioSelector onSelect={setSelectedAudio} />
-        </div> */}
 
         {/* audio selector */}
         {/* wrapper untuk hover */}
