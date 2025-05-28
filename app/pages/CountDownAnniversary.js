@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
 import PastelButton from "../components/PastelButton";
+import AudioPlayer from "../components/audioPlayer/AudioPlayer";
 
 function getTimeLeft(targetDate) {
   const now = new Date();
@@ -142,82 +143,84 @@ export default function CountDownAnniversary() {
   }, []);
 
   return (
-    <div
-      className="relative h-screen w-full flex flex-col items-center justify-center text-center text-white bg-cover bg-center"
-      style={{
-        backgroundImage: "url('/img/HSR_Image_01.webp')",
-      }}
-    >
-      <div className="absolute top-0 right-0 bottom-0 left-0 bg-gray-900 opacity-90"></div>
+    <>
+      <div
+        className="relative h-screen w-full flex flex-col items-center justify-center text-center text-white bg-cover bg-center"
+        style={{
+          backgroundImage: "url('/img/HSR_Image_01.webp')",
+        }}
+      >
+        <div className="absolute top-0 right-0 bottom-0 left-0 bg-gray-900 opacity-90"></div>
 
-      {/* text */}
-      <div className="z-10 text-sm">
-        {isAnniversaryNow
-          ? `Trailblazers, The ${currentAnniversary} Anniversary is Happening Now!`
-          : `Trailblazers, Prepare! ${currentAnniversary} Anniversary Begins In:`}
-      </div>
-      {/* end text */}
+        {/* text */}
+        <div className="z-10 text-sm">
+          {isAnniversaryNow
+            ? `Trailblazers, The ${currentAnniversary} Anniversary is Happening Now!`
+            : `Trailblazers, Prepare! ${currentAnniversary} Anniversary Begins In:`}
+        </div>
+        {/* end text */}
 
-      {/* count down */}
-      <div className="flex items-end justify-center z-10">
-        <div className="m-2 sm:m-5">
-          <span className="text-[#e1c8be] font-bold text-xl sm:text-5xl">
-            {isAnniversaryNow ? "00" : timeLeft.days}
-          </span>
-          <p>Days</p>
+        {/* count down */}
+        <div className="flex items-end justify-center z-10">
+          <div className="m-2 sm:m-5">
+            <span className="text-[#e1c8be] font-bold text-xl sm:text-5xl">
+              {isAnniversaryNow ? "00" : timeLeft.days}
+            </span>
+            <p>Days</p>
+          </div>
+          <div className="m-2 sm:m-5">
+            <span className="text-[#e1c8be] font-bold text-xl sm:text-5xl">
+              {isAnniversaryNow
+                ? "00"
+                : timeLeft.hours.toString().padStart(2, "0")}
+            </span>
+            <p>Hours</p>
+          </div>
+          <div className="m-2 sm:m-5">
+            <span className="text-[#e1c8be] font-bold text-xl sm:text-5xl">
+              {isAnniversaryNow
+                ? "00"
+                : timeLeft.minutes.toString().padStart(2, "0")}
+            </span>
+            <p>Minutes</p>
+          </div>
+          <div className="m-2 sm:m-5">
+            <span
+              className="text-[#e1c8be] font-bold text-xl sm:text-5xl"
+              // style={{ color: "#e1c8be" }}
+            >
+              {isAnniversaryNow
+                ? "00"
+                : timeLeft.seconds.toString().padStart(2, "0")}
+            </span>
+            <p>Seconds</p>
+          </div>
         </div>
-        <div className="m-2 sm:m-5">
-          <span className="text-[#e1c8be] font-bold text-xl sm:text-5xl">
-            {isAnniversaryNow
-              ? "00"
-              : timeLeft.hours.toString().padStart(2, "0")}
-          </span>
-          <p>Hours</p>
-        </div>
-        <div className="m-2 sm:m-5">
-          <span className="text-[#e1c8be] font-bold text-xl sm:text-5xl">
-            {isAnniversaryNow
-              ? "00"
-              : timeLeft.minutes.toString().padStart(2, "0")}
-          </span>
-          <p>Minutes</p>
-        </div>
-        <div className="m-2 sm:m-5">
-          <span
-            className="text-[#e1c8be] font-bold text-xl sm:text-5xl"
-            // style={{ color: "#e1c8be" }}
-          >
-            {isAnniversaryNow
-              ? "00"
-              : timeLeft.seconds.toString().padStart(2, "0")}
-          </span>
-          <p>Seconds</p>
-        </div>
-      </div>
-      {/* end count down */}
+        {/* end count down */}
 
-      {/* buttons */}
-      <div className="z-10 mt-5">
-        <div className="flex flex-col md:flex-row gap-8 md:gap-4">
-          {/* button download */}
-          <PastelButton
-            buttonText={"Download"}
-            navLink={"https://hsr.hoyoverse.com/en-us/"}
-            targetBlank={true}
-          />
-          {/* end button download */}
+        {/* buttons */}
+        <div className="z-10 mt-5">
+          <div className="flex flex-col md:flex-row gap-8 md:gap-4">
+            {/* button download */}
+            <PastelButton
+              buttonText={"Download"}
+              navLink={"https://hsr.hoyoverse.com/en-us/"}
+              targetBlank={true}
+            />
+            {/* end button download */}
 
-          {/* button home */}
-          {/* <PastelButton
+            {/* button home */}
+            {/* <PastelButton
             buttonText={"Home"}
             navLink={"/home"}
             targetBlank={false}
           /> */}
-          {/* end button home */}
+            {/* end button home */}
+          </div>
         </div>
+        {/* end buttons */}
       </div>
-      {/* end buttons */}
-    </div>
+    </>
   );
 }
 

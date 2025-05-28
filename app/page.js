@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import dynamic from "next/dynamic";
+import AudioPlayer from "./components/audioPlayer/AudioPlayer";
 
 const CountdownAnniversary = dynamic(
   () => import("./pages/CountDownAnniversary"),
@@ -10,7 +11,12 @@ const CountdownAnniversary = dynamic(
 );
 
 function page() {
-  return <CountdownAnniversary />;
+  return (
+    <>
+      <AudioPlayer />
+      <CountdownAnniversary />
+    </>
+  );
 }
 
 export default page;
