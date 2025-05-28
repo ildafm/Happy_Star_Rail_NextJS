@@ -55,7 +55,8 @@ export default function AudioPlayer() {
         {/* wrapper untuk hover */}
         <div className="relative">
           {/* Selector muncul saat hover tombol atau area selector */}
-          <div className="hidden group-hover:block group-focus-within:block">
+          {/* <div className="hidden group-hover:block group-focus-within:block"> */}
+          <div className="">
             <AudioSelector onSelect={setSelectedAudio} />
           </div>
         </div>
