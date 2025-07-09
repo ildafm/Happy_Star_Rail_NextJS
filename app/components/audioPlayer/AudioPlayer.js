@@ -5,8 +5,8 @@ import AudioSelector from "./AudioSelector";
 
 export default function AudioPlayer() {
   const [selectedAudio, setSelectedAudio] = useState("01 Star Rail"); // default music
-  const [isMuted, setIsMuted] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
+  // const [isMuted, setIsMuted] = useState(false);
+  const [isPaused, setIsPaused] = useState(true);
   const audioRef = useRef(null);
 
   //   const toggleMute = () => {
