@@ -5,6 +5,7 @@ const audioList = {
   2: "Faded Sun",
   3: "Hope Is the Thing With Feathers",
   4: "Wildfire",
+  5: "Proi Proi",
 };
 
 export default function AudioSelector({ onSelect }) {
