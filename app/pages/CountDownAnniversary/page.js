@@ -1,9 +1,12 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
 import { getBackgroundList } from "./fetch";
 import AudioPlayer from "@/app/components/audioPlayer/AudioPlayer";
 import PastelButton from "@/app/components/button/PastelButton";
+import ChangeBackgroundButton from "./components/ChangeBackgroundButton";
+import { abc, getRandomIndex } from "@/app/libs/customHandler";
 
 function getTimeLeft(targetDate) {
   const now = new Date();
@@ -73,7 +76,8 @@ export default function page() {
   const [timeLeft, setTimeLeft] = useState(getTimeLeft(targetDate));
   const [isAnniversaryNow, setIsAnniversaryNow] = useState(false); // ubah sesuai tanggal anniversary
   const [backgroundList, setBackgroundList] = useState(null);
-  const [backgroundPath, setBackgroundPath] = useState(null);
+  const [currentSelectedBackground, setCurrentSelectedBackground] =
+    useState(null);
 
   const currentAnniversary = getCurrentAnniversary(targetDate.getFullYear());
 
@@ -90,6 +94,7 @@ export default function page() {
     return () => clearInterval(checkDateChange);
   }, [targetDate]);
 
+  // confeti
   useEffect(() => {
     const now = new Date();
     const isTodayAnniversary =
@@ -157,40 +162,42 @@ export default function page() {
 
       fetchBackgroundList();
     } else {
-      if (!backgroundPath) {
+      if (!currentSelectedBackground) {
         // console.log("Have background list, try to set background...");
-        const randomIndex = Math.floor(Math.random() * backgroundList.length);
+        const randomIndex = getRandomIndex(backgroundList);
+
         // console.log("choosen background:");
         const choosenBackgroundData = backgroundList[randomIndex];
-        // console.log(choosenBackgroundData.link_background);
-        setBackgroundPath(choosenBackgroundData.link_background);
+        setCurrentSelectedBackground(choosenBackgroundData);
       }
     }
-
-    // if (!backgroundPath) {
-    //   const listBackground = [
-    //     "background_hsr_1",
-    //     "background_hsr_2",
-    //     "background_hsr_3",
-    //     "background_hsr_4",
-    //   ];
-
-    // const randomIndex = Math.floor(Math.random() * listBackground.length);
-    // console.log(randomIndex);
-
-    // setBackgroundPath(listBackground[randomIndex]);
-    // }
   }, [backgroundList]);
+  // console.log(currentSelectedBackground);
 
   return (
     <div
       className="relative h-screen w-full flex flex-col items-center justify-center text-center text-white bg-cover bg-center"
       style={{
-        backgroundImage: `url(${backgroundPath})`,
+        backgroundImage: `url(${
+          currentSelectedBackground
+            ? currentSelectedBackground.link_background
+            : ""
+        })`,
       }}
     >
       {/* component audio */}
-      <AudioPlayer />
+      <div className="">
+        <div className="">
+          <AudioPlayer />
+        </div>
+        <div>
+          <ChangeBackgroundButton
+            backgroundList={backgroundList}
+            currentSelectedBackground={currentSelectedBackground}
+            setCurrentSelectedBackground={setCurrentSelectedBackground}
+          />
+        </div>
+      </div>
 
       <div className="absolute top-0 right-0 bottom-0 left-0 bg-gray-900 opacity-90"></div>
 
