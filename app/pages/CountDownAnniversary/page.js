@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
 import PastelButton from "@/app/components/PastelButton";
 import { getBackgroundList } from "./fetch";
+import AudioPlayer from "@/app/components/audioPlayer/AudioPlayer";
 
 function getTimeLeft(targetDate) {
   const now = new Date();
@@ -161,8 +162,8 @@ export default function page() {
         const randomIndex = Math.floor(Math.random() * backgroundList.length);
         // console.log("choosen background:");
         const choosenBackgroundData = backgroundList[randomIndex];
-        console.log(choosenBackgroundData.src);
-        setBackgroundPath(choosenBackgroundData.src);
+        // console.log(choosenBackgroundData.link_background);
+        setBackgroundPath(choosenBackgroundData.link_background);
       }
     }
 
@@ -188,6 +189,9 @@ export default function page() {
         backgroundImage: `url(${backgroundPath})`,
       }}
     >
+      {/* component audio */}
+      <AudioPlayer />
+
       <div className="absolute top-0 right-0 bottom-0 left-0 bg-gray-900 opacity-90"></div>
 
       {/* text */}

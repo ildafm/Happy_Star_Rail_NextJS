@@ -11,7 +11,10 @@ export const getBackgroundList = async () => {
     // console.log("Panjang JSON:", json.length);
     // console.log("Complete fetching");
 
-    return json;
+    // filter agar tidak ada "portrait" (sementara)
+    const filtered = json.filter((json) => json.size !== "portrait");
+
+    return filtered;
   } catch (err) {
     console.error("Error:", err);
     return null;
