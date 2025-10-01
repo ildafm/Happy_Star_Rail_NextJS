@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
-import PastelButton from "@/app/components/PastelButton";
 import { getBackgroundList } from "./fetch";
 import AudioPlayer from "@/app/components/audioPlayer/AudioPlayer";
+import PastelButton from "@/app/components/button/PastelButton";
 
 function getTimeLeft(targetDate) {
   const now = new Date();
