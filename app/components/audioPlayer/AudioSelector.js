@@ -8,7 +8,7 @@ const audioList = {
   5: "Proi Proi",
 };
 
-export default function AudioSelector({ onSelect }) {
+export default function AudioSelector({ onSelect, isPaused }) {
   const setAudioSelected = (e) => {
     let audioSrc = "";
     e < 10 ? (audioSrc = `0${e}`) : (audioSrc = e);
@@ -20,6 +20,7 @@ export default function AudioSelector({ onSelect }) {
 
   return (
     <select
+      disabled={isPaused}
       onChange={(e) => onSelect(setAudioSelected(e.target.value))}
       className="p-1 rounded bg-transparent border border-transparent"
       style={{ width: "100px" }}

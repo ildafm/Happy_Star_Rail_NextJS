@@ -35,13 +35,6 @@ export default function AudioPlayer() {
     }
   }, [isPaused]);
 
-  //   muted setting
-  //   useEffect(() => {
-  //     if (audioRef.current) {
-  //       audioRef.current.muted = isMuted;
-  //     }
-  //   }, [isMuted]);
-
   return (
     <div className="absolute top-0 left-0 m-4 z-10">
       <div className="group relative flex items-center gap-2">
@@ -57,7 +50,7 @@ export default function AudioPlayer() {
           {/* Selector muncul saat hover tombol atau area selector */}
           {/* <div className="hidden group-hover:block group-focus-within:block"> */}
           <div className="">
-            <AudioSelector onSelect={setSelectedAudio} />
+            <AudioSelector onSelect={setSelectedAudio} isPaused={isPaused} />
           </div>
         </div>
 
