@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
-import PastelButton from "../components/PastelButton";
-// import AudioPlayer from "../components/audioPlayer/AudioPlayer";
+import PastelButton from "@/app/components/PastelButton";
+import { getBackgroundList } from "./fetch";
 
 function getTimeLeft(targetDate) {
   const now = new Date();
@@ -67,11 +67,13 @@ function getCurrentAnniversary(targetYear) {
   return text;
 }
 
-export default function CountDownAnniversary() {
+export default function page() {
   const [targetDate, setTargetDate] = useState(getTargetDate());
   const [timeLeft, setTimeLeft] = useState(getTimeLeft(targetDate));
   const [isAnniversaryNow, setIsAnniversaryNow] = useState(false); // ubah sesuai tanggal anniversary
+  const [backgroundList, setBackgroundList] = useState(null);
   const [backgroundPath, setBackgroundPath] = useState(null);
+
   const currentAnniversary = getCurrentAnniversary(targetDate.getFullYear());
 
   useEffect(() => {
@@ -142,27 +144,48 @@ export default function CountDownAnniversary() {
     return () => clearInterval(timer);
   }, []);
 
+  // fetch background list json
   useEffect(() => {
-    if (!backgroundPath) {
-      const listBackground = [
-        "background_hsr_1",
-        "background_hsr_2",
-        "background_hsr_3",
-        "background_hsr_4",
-      ];
+    // Ubah string JSON menjadi objek JavaScript
+    if (!backgroundList) {
+      // console.log("Fetch background list");
+      const fetchBackgroundList = async () => {
+        const json = await getBackgroundList();
+        setBackgroundList(json);
+      };
 
-      const randomIndex = Math.floor(Math.random() * listBackground.length);
-      // console.log(randomIndex);
-
-      setBackgroundPath(listBackground[randomIndex]);
+      fetchBackgroundList();
+    } else {
+      if (!backgroundPath) {
+        // console.log("Have background list, try to set background...");
+        const randomIndex = Math.floor(Math.random() * backgroundList.length);
+        // console.log("choosen background:");
+        const choosenBackgroundData = backgroundList[randomIndex];
+        console.log(choosenBackgroundData.src);
+        setBackgroundPath(choosenBackgroundData.src);
+      }
     }
-  }, []);
+
+    // if (!backgroundPath) {
+    //   const listBackground = [
+    //     "background_hsr_1",
+    //     "background_hsr_2",
+    //     "background_hsr_3",
+    //     "background_hsr_4",
+    //   ];
+
+    // const randomIndex = Math.floor(Math.random() * listBackground.length);
+    // console.log(randomIndex);
+
+    // setBackgroundPath(listBackground[randomIndex]);
+    // }
+  }, [backgroundList]);
 
   return (
     <div
       className="relative h-screen w-full flex flex-col items-center justify-center text-center text-white bg-cover bg-center"
       style={{
-        backgroundImage: `url(/img/backgrounds/${backgroundPath}.png)`,
+        backgroundImage: `url(${backgroundPath})`,
       }}
     >
       <div className="absolute top-0 right-0 bottom-0 left-0 bg-gray-900 opacity-90"></div>
