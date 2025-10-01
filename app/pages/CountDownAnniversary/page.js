@@ -6,7 +6,7 @@ import { getBackgroundList } from "./fetch";
 import AudioPlayer from "@/app/components/audioPlayer/AudioPlayer";
 import PastelButton from "@/app/components/button/PastelButton";
 import ChangeBackgroundButton from "./components/ChangeBackgroundButton";
-import { abc, getRandomIndex } from "@/app/libs/customHandler";
+import { getRandomIndex } from "@/app/libs/customHandler";
 
 function getTimeLeft(targetDate) {
   const now = new Date();
@@ -75,6 +75,7 @@ export default function page() {
   const [targetDate, setTargetDate] = useState(getTargetDate());
   const [timeLeft, setTimeLeft] = useState(getTimeLeft(targetDate));
   const [isAnniversaryNow, setIsAnniversaryNow] = useState(false); // ubah sesuai tanggal anniversary
+  const [finalBackgroundList, setFinalBackgroundList] = useState(null);
   const [backgroundList, setBackgroundList] = useState(null);
   const [currentSelectedBackground, setCurrentSelectedBackground] =
     useState(null);
@@ -157,6 +158,7 @@ export default function page() {
       // console.log("Fetch background list");
       const fetchBackgroundList = async () => {
         const json = await getBackgroundList();
+        setFinalBackgroundList(json);
         setBackgroundList(json);
       };
 
@@ -193,8 +195,10 @@ export default function page() {
         <div>
           <ChangeBackgroundButton
             backgroundList={backgroundList}
+            setBackgroundList={setBackgroundList}
             currentSelectedBackground={currentSelectedBackground}
             setCurrentSelectedBackground={setCurrentSelectedBackground}
+            finalBackgroundList={finalBackgroundList}
           />
         </div>
       </div>
