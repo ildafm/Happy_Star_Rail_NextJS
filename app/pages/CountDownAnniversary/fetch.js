@@ -1,3 +1,5 @@
+import { isMobile } from "react-device-detect";
+
 export const getBackgroundList = async () => {
   const background_list_json_path = "/json/background_list.json";
 
@@ -11,10 +13,13 @@ export const getBackgroundList = async () => {
     // console.log("Panjang JSON:", json.length);
     // console.log("Complete fetching");
 
-    // filter agar tidak ada "portrait" (sementara)
-    const filtered = json.filter((json) => json.size !== "portrait");
+    // filter agar tidak ada "portrait" (jika bukan mobile)
+    if (!isMobile) {
+      const filtered = json.filter((json) => json.size !== "portrait");
+      return filtered;
+    }
 
-    return filtered;
+    return json;
   } catch (err) {
     console.error("Error:", err);
     return null;
