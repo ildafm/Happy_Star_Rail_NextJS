@@ -13,13 +13,12 @@ export const getBackgroundList = async () => {
     // console.log("Panjang JSON:", json.length);
     // console.log("Complete fetching");
 
-    // filter agar tidak ada "portrait" (jika bukan mobile)
-    if (!isMobile) {
-      const filtered = json.filter((json) => json.size !== "portrait");
-      return filtered;
-    }
+    const filtered = isMobile
+      ? json.filter((json) => json.portrait_suitable === "TRUE") // jika mobile filter portrait_suitable TRUE
+      : json.filter((json) => json.portrait_suitable === "FALSE");
 
-    return json;
+    // const filtered = json.filter((json) => json.portrait_suitable === "FALSE");
+    return filtered;
   } catch (err) {
     console.error("Error:", err);
     return null;
