@@ -192,7 +192,7 @@ export default function page() {
         <div className="">
           <AudioPlayer />
         </div>
-        <div>
+        <div className="">
           <ChangeBackgroundButton
             backgroundList={backgroundList}
             setBackgroundList={setBackgroundList}
@@ -261,54 +261,9 @@ export default function page() {
             targetBlank={true}
           />
           {/* end button download */}
-
-          {/* button home */}
-          {/* <PastelButton
-            buttonText={"Home"}
-            navLink={"/home"}
-            targetBlank={false}
-          /> */}
-          {/* end button home */}
         </div>
       </div>
       {/* end buttons */}
     </div>
   );
 }
-
-// --------------------------------------------------------------------------------------------------------
-/*
-function getTargetDate() {
-  const today = new Date(); // Mendapatkan tanggal hari ini
-  today.setMonth(today.getMonth() + 1);
-
-  // anniversary HSR adalah 26 April
-  const targetMonth = 4;
-  const targetDate = 26;
-  let targetYear = 2025;
-
-  if (today.getMonth() < targetMonth) {
-    // jika bulan sekarang kurang dari targetMonth, maka targetYear adalah tahun sekarang
-    targetYear = today.getFullYear();
-  } else if (today.getMonth() == targetMonth) {
-    // jika bulan sekarang sama dengan targetMonth, maka cek tanggalnya
-    if (today.getDate() < targetDate) {
-      // jika tanggal sekarang kurang dari targetDate, maka maka targetYear adalah tahun sekarang
-      targetYear = today.getFullYear();
-    } else if (today.getDate() > targetDate) {
-      // jika tanggal sekarang lebih dari targetDate, maka targetYear adalah tahun depan
-      targetYear = today.getFullYear() + 1;
-    }
-  } else {
-    // jika bulan sekarang lebih dari targetMonth, maka targetYear adalah tahun depan
-    targetYear = today.getFullYear() + 1;
-  }
-  const finalTargetDate = new Date(
-    targetYear,
-    targetMonth - 1, // bulan dimulai dari 0 jadi untuk menargetkan april harus dikurang 1
-    targetDate
-  );
-
-  return finalTargetDate;
-}
-*/

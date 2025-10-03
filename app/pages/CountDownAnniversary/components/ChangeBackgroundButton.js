@@ -1,5 +1,4 @@
 import { getRandomIndex } from "@/app/libs/customHandler";
-import { isMobile } from "react-device-detect";
 import { useCallback } from "react";
 
 export default function ChangeBackgroundButton({
@@ -35,11 +34,7 @@ export default function ChangeBackgroundButton({
   ]);
 
   return (
-    <div
-      className={`absolute ${
-        !isMobile ? "top-0 right-0" : "bottom-0 right-0"
-      } m-4 z-10`}
-    >
+    <div className={`absolute top-0 left-0 sm:left-auto sm:right-0 m-4 z-10`}>
       <div className="rounded-md shadow">
         <button
           className="w-full px-2 border border-transparent text-base leading-6 font-light rounded-full text-[#1d212e] bg-[#e1c8be] hover:bg-[#DAB7A9] focus:outline-none transition duration-150 ease-in-out"

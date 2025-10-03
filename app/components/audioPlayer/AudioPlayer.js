@@ -36,7 +36,7 @@ export default function AudioPlayer() {
   }, [isPaused]);
 
   return (
-    <div className="absolute top-0 left-0 m-4 z-10">
+    <div className={`absolute top-10 md:top-0 left-0 m-4 z-10`}>
       <div className="group relative flex items-center gap-2">
         {/* button pause/unpause */}
         <div>
