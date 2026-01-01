@@ -6,6 +6,7 @@ const audioList = {
   3: "Hope Is the Thing With Feathers",
   4: "Wildfire",
   5: "Proi Proi",
+  6: "If I Can Stop One Heart From Breaking",
 };
 
 export default function AudioSelector({ onSelect, isPaused }) {
