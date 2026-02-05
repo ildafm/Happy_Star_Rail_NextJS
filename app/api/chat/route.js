@@ -9,10 +9,12 @@ export async function POST(req) {
 
     const context = await getHSRContext(message);
 
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const genAI = new GoogleGenerativeAI(
+      process.env.NEXT_PUBLIC_GEMINI_API_KEY,
+    );
 
     const model = genAI.getGenerativeModel({
-      model: process.env.GEMINI_VERSION,
+      model: process.env.NEXT_PUBLIC_GEMINI_VERSION,
       systemInstruction: HERTA_SYSTEM_PROMPT,
     });
 
@@ -28,14 +30,14 @@ ${message}
       JSON.stringify({
         reply: result.response.text(),
       }),
-      { status: 200 }
+      { status: 200 },
     );
   } catch (err) {
     return new Response(
       JSON.stringify({
         reply: "Terjadi kesalahan sistem. Herta tidak peduli.",
       }),
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
