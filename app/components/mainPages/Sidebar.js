@@ -31,8 +31,8 @@ export default function Sidebar({ activePage }) {
   const menuItems = [
     {
       icon: Compass,
-      label: "Count Down Page",
-      mobileLabel: "Count Down",
+      label: "Countdown Page",
+      mobileLabel: "Countdown",
       href: "/",
       active: pathname === "/",
       wip: false,
