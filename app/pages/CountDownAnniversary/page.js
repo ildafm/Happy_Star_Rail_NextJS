@@ -284,7 +284,7 @@ export default function page() {
         "
               style={{ backgroundColor: "#e1c8be", color: "#6b4c42" }}
             >
-              ngobrol bareng Herta
+              Ngobrol Bareng Herta
             </div>
 
             {/* Lingkaran background pastel + gambar */}
