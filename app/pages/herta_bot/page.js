@@ -6,7 +6,9 @@ import { Send } from "lucide-react";
 
 export default function Home() {
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    { role: "bot", text: "Apa yang kau inginkan?" }, // pesan awal dari bot
+  ]);
 
   const chatEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -41,33 +43,25 @@ export default function Home() {
       {/* ===== KOLOM CHAT ===== */}
       <section
         className="flex flex-col flex-1 bg-gray-900 overflow-hidden
-        /* Mobile: full height dikurangi bottom nav (h-16) */
         h-[calc(100dvh-4rem)]
-        /* Desktop: full height normal */
         md:h-screen
       "
       >
         {/* Header */}
         <div className="shrink-0 px-4 py-3 border-b border-white/10 flex items-center justify-between">
-          <h1 className="text-base md:text-xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-base md:text-xl font-bold text-white flex items-center gap-2 my-4">
             🤖 <span>Herta Support Unit</span>
           </h1>
 
-          {/* Tombol lihat profil — hanya muncul di mobile, karena desktop ada ProfileBar kanan */}
-          <button className="md:hidden text-xs text-gray-400 border border-white/10 px-2.5 py-1 rounded-full hover:bg-white/5 transition">
-            Profil
-          </button>
+          <img
+            src="https://pbs.twimg.com/media/GhJ_shQW8AAC8LA.jpg"
+            alt="Herta"
+            className="w-16 h-16 rounded-full object-cover md:hidden"
+          />
         </div>
 
         {/* Area History Chat */}
         <div className="flex-1 overflow-y-auto hide-scrollbar scroll-smooth px-3 md:px-4 py-4 space-y-3">
-          {messages.length === 0 && (
-            <div className="flex flex-col items-center justify-center h-full gap-2 text-gray-500 text-sm select-none">
-              <span className="text-4xl">🤖</span>
-              <p>Tanya apa saja kepada Herta</p>
-            </div>
-          )}
-
           {messages.map((msg, i) => (
             <div
               key={i}
@@ -77,7 +71,6 @@ export default function Home() {
             >
               <div
                 className={`
-                  /* Mobile: max 85% lebar, Desktop: 75% */
                   max-w-[85%] md:max-w-[75%]
                   px-4 py-2.5 rounded-2xl text-sm leading-relaxed backdrop-blur-md
                   ${
@@ -110,7 +103,6 @@ export default function Home() {
                   sendMessage();
                 }
               }}
-              // Hindari zoom otomatis di iOS (font-size min 16px)
               style={{ fontSize: "16px" }}
             />
             <button
