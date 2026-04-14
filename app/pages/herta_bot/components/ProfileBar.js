@@ -2,7 +2,7 @@ import React from "react";
 
 export default function ProfileBar() {
   return (
-    <aside className="w-64 bg-gray-800 border-l p-4">
+    <aside className="w-64 bg-gray-800 border-l p-4 hidden md:block">
       <div className="flex flex-col items-center text-center">
         <img
           src="https://pbs.twimg.com/media/GhJ_shQW8AAC8LA.jpg"
