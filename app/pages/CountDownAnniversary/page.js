@@ -7,6 +7,7 @@ import AudioPlayer from "@/app/components/audioPlayer/AudioPlayer";
 import PastelButton from "@/app/components/button/PastelButton";
 import ChangeBackgroundButton from "./components/ChangeBackgroundButton";
 import { getRandomIndex } from "@/app/libs/customHandler";
+import Link from "next/link";
 
 function getTimeLeft(targetDate) {
   const now = new Date();
@@ -264,6 +265,48 @@ export default function page() {
         </div>
       </div>
       {/* end buttons */}
+
+      {/* Go to herta bot button */}
+      <div className="z-10 absolute right-14 bottom-14">
+        <Link href={"/pages/herta_bot"}>
+          <div className="group relative flex items-center justify-end">
+            {/* Teks slide keluar ke kiri */}
+            <div
+              className="
+          absolute right-16
+          flex items-center justify-end
+          text-sm font-medium
+          pl-4 pr-8 h-12 rounded-l-full
+          whitespace-nowrap overflow-hidden
+          max-w-0 opacity-0
+          group-hover:max-w-[200px] group-hover:opacity-100
+          transition-all duration-500 ease-in-out
+        "
+              style={{ backgroundColor: "#e1c8be", color: "#6b4c42" }}
+            >
+              ngobrol bareng Herta
+            </div>
+
+            {/* Lingkaran background pastel + gambar */}
+            <div
+              className="relative z-10 w-20 h-20 rounded-full flex items-center justify-center shrink-0"
+              style={{ backgroundColor: "#e1c8be" }}
+            >
+              <img
+                src="https://pbs.twimg.com/media/GhJ_shQW8AAC8LA.jpg"
+                alt="Herta"
+                className="
+            w-20 h-20 rounded-full object-cover
+            group-hover:w-16 group-hover:h-16
+            transition-all duration-500 ease-in-out
+            group-hover:rotate-[360deg]
+          "
+              />
+            </div>
+          </div>
+        </Link>
+      </div>
+      {/* end Go to herta bot button */}
     </div>
   );
 }
