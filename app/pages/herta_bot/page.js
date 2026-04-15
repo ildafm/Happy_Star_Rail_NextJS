@@ -6,41 +6,75 @@ import { Send } from "lucide-react";
 
 export default function Home() {
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState([
-    { role: "bot", text: "Apa yang kau inginkan?" }, // pesan awal dari bot
+    { role: "bot", text: "Herta sibuk, apa yang kau inginkan?" },
   ]);
+  const [isStreaming, setIsStreaming] = useState(false); // ← TAMBAH
 
   const chatEndRef = useRef(null);
   const inputRef = useRef(null);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, isLoading]);
 
   async function sendMessage() {
-    if (!input.trim()) return;
+    if (!input.trim() || isLoading) return;
 
     const userMsg = input;
     setMessages((prev) => [...prev, { role: "user", text: userMsg }]);
     setInput("");
+    setIsLoading(true);
 
-    // Kembalikan fokus ke input setelah kirim (penting di mobile)
     setTimeout(() => inputRef.current?.focus(), 100);
 
-    const res = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: userMsg }),
-    });
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userMsg }),
+      });
 
-    const data = await res.json();
+      // Tambah placeholder bot kosong dulu
+      setMessages((prev) => [...prev, { role: "bot", text: "" }]);
+      setIsLoading(false);
+      setIsStreaming(true); // ← mulai streaming
 
-    setMessages((prev) => [...prev, { role: "bot", text: data.reply }]);
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+
+        for (const char of chunk) {
+          await new Promise((resolve) => setTimeout(resolve, 30));
+          setMessages((prev) => {
+            const updated = [...prev];
+            updated[updated.length - 1] = {
+              role: "bot",
+              text: updated[updated.length - 1].text + char,
+            };
+            return updated;
+          });
+        }
+      }
+
+      setIsStreaming(false); // ← selesai streaming
+    } catch {
+      setIsLoading(false);
+      setMessages((prev) => [
+        ...prev,
+        { role: "bot", text: "Terjadi kesalahan sistem. Herta tidak peduli." },
+      ]);
+    }
   }
 
   return (
     <>
-      {/* ===== KOLOM CHAT ===== */}
       <section
         className="flex flex-col flex-1 bg-gray-900 overflow-hidden
         h-[calc(100dvh-4rem)]
@@ -52,7 +86,6 @@ export default function Home() {
           <h1 className="text-base md:text-xl font-bold text-white flex items-center gap-2 my-4">
             🤖 <span>Herta Support Unit</span>
           </h1>
-
           <img
             src="https://pbs.twimg.com/media/GhJ_shQW8AAC8LA.jpg"
             alt="Herta"
@@ -60,14 +93,12 @@ export default function Home() {
           />
         </div>
 
-        {/* Area History Chat */}
+        {/* Chat History */}
         <div className="flex-1 overflow-y-auto hide-scrollbar scroll-smooth px-3 md:px-4 py-4 space-y-3">
           {messages.map((msg, i) => (
             <div
               key={i}
-              className={`flex ${
-                msg.role === "user" ? "justify-end" : "justify-start"
-              }`}
+              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
                 className={`
@@ -80,15 +111,33 @@ export default function Home() {
                   }
                 `}
               >
+                {/* Cursor kedip di pesan bot terakhir yang masih streaming */}
                 {msg.text}
+                {msg.role === "bot" &&
+                  i === messages.length - 1 &&
+                  isStreaming && // ← ganti kondisi ini
+                  msg.text !== "Herta sibuk, apa yang kau inginkan?" && (
+                    <span className="inline-block w-0.5 h-3.5 bg-gray-400 ml-0.5 align-middle animate-pulse" />
+                  )}
               </div>
             </div>
           ))}
 
+          {/* Loading dots — muncul sebelum stream mulai */}
+          {isLoading && (
+            <div className="flex justify-start">
+              <div className="bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl rounded-bl-sm flex items-center gap-1.5">
+                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0ms]" />
+                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:150ms]" />
+                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:300ms]" />
+              </div>
+            </div>
+          )}
+
           <div ref={chatEndRef} />
         </div>
 
-        {/* Input Area */}
+        {/* Input */}
         <div className="shrink-0 px-3 md:px-4 py-3 border-t border-white/10 bg-gray-900">
           <div className="flex items-center gap-2 bg-white/5 rounded-2xl px-3 py-2 border border-white/10 focus-within:border-blue-500/50 transition">
             <input
@@ -107,10 +156,10 @@ export default function Home() {
             />
             <button
               onClick={sendMessage}
-              disabled={!input.trim()}
+              disabled={!input.trim() || isLoading}
               className={`shrink-0 w-8 h-8 rounded-xl flex items-center justify-center transition
                 ${
-                  input.trim()
+                  input.trim() && !isLoading
                     ? "bg-blue-500 text-white hover:bg-blue-400"
                     : "bg-white/5 text-gray-600"
                 }
@@ -122,7 +171,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== KOLOM PROFIL — hanya desktop ===== */}
       <ProfileBar />
     </>
   );
