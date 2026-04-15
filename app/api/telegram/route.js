@@ -36,7 +36,7 @@ function isHertaRelated(message) {
 }
 
 async function sendTelegram(chatId, text) {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const token = process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN;
   await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
