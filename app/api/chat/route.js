@@ -80,11 +80,10 @@ export async function POST(req) {
       },
     });
   } catch (err) {
-    return new Response(
-      JSON.stringify({
-        reply: "Terjadi kesalahan sistem. Herta tidak peduli.",
-      }),
-      { status: 500 },
-    );
+    console.error("Herta API error:", err.message); // ← lihat di terminal
+    return new Response("Terjadi kesalahan sistem. Herta tidak peduli.", {
+      status: 500,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
   }
 }

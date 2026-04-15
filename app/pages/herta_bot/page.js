@@ -39,7 +39,19 @@ export default function Home() {
       // Tambah placeholder bot kosong dulu
       setMessages((prev) => [...prev, { role: "bot", text: "" }]);
       setIsLoading(false);
-      setIsStreaming(true); // ← mulai streaming
+
+      // ← Cek status response dulu
+      if (!res.ok) {
+        const errText = await res.text();
+        setMessages((prev) => {
+          const updated = [...prev];
+          updated[updated.length - 1] = { role: "bot", text: errText };
+          return updated;
+        });
+        return;
+      }
+
+      setIsStreaming(true);
 
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -51,7 +63,7 @@ export default function Home() {
         const chunk = decoder.decode(value, { stream: true });
 
         for (const char of chunk) {
-          await new Promise((resolve) => setTimeout(resolve, 30));
+          await new Promise((resolve) => setTimeout(resolve, 15)); // 15, 30, 50
           setMessages((prev) => {
             const updated = [...prev];
             updated[updated.length - 1] = {
