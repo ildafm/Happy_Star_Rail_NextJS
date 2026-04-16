@@ -72,6 +72,8 @@ export async function POST(req) {
           "Kau butuh bantuan hanya untuk berbicara dengan Herta? Menyedihkan.\n\nCukup ketik pertanyaanmu. Herta akan memutuskan apakah itu layak dijawab.",
         "/about":
           "Aku adalah unit robot Herta dari Herta Space Station. Dibuat menyerupai sang Genius itu sendiri.\n\nAnggota ke-83 Genius Society. Emanator Nous. Pencipta Simulated Universe.\n\nCukup sudah perkenalannya.",
+        "/ping":
+          "[Peringatan Sistem] Terjadi kesalahan sistem. Dan tebak? Herta tidak peduli. Aku sedang malas menanggapi omong kosongmu sekarang. Pergilah dan kembali lagi nanti.",
       };
 
       const reply =
