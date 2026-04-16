@@ -48,48 +48,6 @@ async function sendTelegram(chatId, text) {
   });
 }
 
-// export async function POST(req) {
-//   try {
-//     const body = await req.json();
-
-//     // Ambil pesan dari update Telegram
-//     const message = body?.message;
-//     if (!message || !message.text) {
-//       return new Response("OK", { status: 200 }); // abaikan non-text (sticker, foto, dll)
-//     }
-
-//     const chatId = message.chat.id;
-//     const userText = message.text;
-
-//     // Proses sama seperti route chat biasa
-//     const needsData = isHertaRelated(userText);
-//     const context = needsData ? await getMadamHertaProfile(userText) : null;
-
-//     const genAI = new GoogleGenerativeAI(
-//       process.env.NEXT_PUBLIC_GEMINI_API_KEY,
-//     );
-//     const model = genAI.getGenerativeModel({
-//       model: process.env.NEXT_PUBLIC_GEMINI_VERSION,
-//       systemInstruction: HERTA_SYSTEM_PROMPT,
-//     });
-
-//     const prompt = context
-//       ? `KONTEN DATA (gunakan ini jika relevan):\n${context}\n\nPERTANYAAN USER:\n${userText}`
-//       : `PERTANYAAN USER:\n${userText}`;
-
-//     // Telegram tidak support streaming, pakai generateContent biasa
-//     const result = await model.generateContent(prompt);
-//     const reply = result.response.text();
-
-//     await sendTelegram(chatId, reply);
-
-//     return new Response("OK", { status: 200 });
-//   } catch (err) {
-//     console.error("Telegram webhook error:", err.message);
-//     return new Response("OK", { status: 200 }); // selalu 200 ke Telegram
-//   }
-// }
-
 export async function POST(req) {
   let chatId = null;
 
@@ -103,6 +61,25 @@ export async function POST(req) {
 
     chatId = message.chat.id;
     const userText = message.text;
+
+    // handle custom command bot tanpa gemini api
+    // Handle semua command (diawali "/")
+    if (userText.startsWith("/")) {
+      const responses = {
+        "/start":
+          "Unit Herta aktif.\n\nAturan:\n— Jangan buang waktu Herta dengan pertanyaan bodoh\n— Herta akan menjawab jika dianggap layak\n— Jangan berharap Herta bersikap ramah\n\nSekarang, ada apa?",
+        "/help":
+          "Kau butuh bantuan hanya untuk berbicara dengan Herta? Menyedihkan.\n\nCukup ketik pertanyaanmu. Herta akan memutuskan apakah itu layak dijawab.",
+        "/about":
+          "Aku adalah unit robot Herta dari Herta Space Station. Dibuat menyerupai sang Genius itu sendiri.\n\nAnggota ke-83 Genius Society. Emanator Nous. Pencipta Simulated Universe.\n\nCukup sudah perkenalannya.",
+      };
+
+      const reply =
+        responses[userText] ??
+        "Herta tidak mengenali perintah itu. Cukup bicara saja.";
+      await sendTelegram(chatId, reply);
+      return new Response("OK", { status: 200 });
+    }
 
     const needsData = isHertaRelated(userText);
     const context = needsData ? await getMadamHertaProfile(userText) : null;
