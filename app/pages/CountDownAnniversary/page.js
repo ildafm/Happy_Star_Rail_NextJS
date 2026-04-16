@@ -299,7 +299,6 @@ export default function page() {
             w-20 h-20 rounded-full object-cover
             group-hover:w-16 group-hover:h-16
             transition-all duration-500 ease-in-out
-            group-hover:rotate-[360deg]
           "
               />
             </div>
