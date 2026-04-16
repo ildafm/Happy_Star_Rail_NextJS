@@ -1,4 +1,4 @@
-"use client";
+"use client"; // test deploy
 
 import React, { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
