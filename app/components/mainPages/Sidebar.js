@@ -107,9 +107,14 @@ export default function Sidebar() {
       {/* ===== DESKTOP SIDEBAR ===== */}
       <aside className="hidden md:flex w-64 bg-[#111] text-gray-200 flex-col border-r border-white/10 min-h-screen">
         <div className="p-4 text-lg font-bold flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white">
+          {/* <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white">
             <Compass size={18} />
-          </div>
+          </div> */}
+          <img
+            src="/img/pompom_icon.ico"
+            alt="icon"
+            className="w-7 h-7 rounded-full object-cover"
+          />
           Happy Star Rail
         </div>
         <nav className="flex-1 px-2 text-sm">
@@ -159,9 +164,14 @@ export default function Sidebar() {
         {/* Drawer Header */}
         <div className="p-4 flex items-center justify-between border-b border-white/10">
           <div className="flex items-center gap-2 text-base font-bold">
-            <div className="w-7 h-7 rounded-full bg-purple-500 flex items-center justify-center text-white">
+            {/* <div className="w-7 h-7 rounded-full bg-purple-500 flex items-center justify-center text-white">
               <Compass size={15} />
-            </div>
+            </div> */}
+            <img
+              src="/img/pompom_icon.ico"
+              alt="icon"
+              className="w-7 h-7 rounded-full object-cover"
+            />
             Happy Star Rail
           </div>
           <button

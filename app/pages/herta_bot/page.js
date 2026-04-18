@@ -10,7 +10,7 @@ export default function Home() {
   const [messages, setMessages] = useState([
     { role: "bot", text: "Herta sibuk, apa yang kau inginkan?" },
   ]);
-  const [isStreaming, setIsStreaming] = useState(false); // ← TAMBAH
+  const [isStreaming, setIsStreaming] = useState(false);
 
   const chatEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -33,7 +33,10 @@ export default function Home() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMsg }),
+        body: JSON.stringify({
+          message: userMsg,
+          history: messages.slice(-10), // ← kirim 10 pesan terakhir (5 pasang)
+        }),
       });
 
       // Tambah placeholder bot kosong dulu
@@ -75,7 +78,7 @@ export default function Home() {
         }
       }
 
-      setIsStreaming(false); // ← selesai streaming
+      setIsStreaming(false); // selesai streaming
     } catch {
       setIsLoading(false);
       setMessages((prev) => [
@@ -87,12 +90,7 @@ export default function Home() {
 
   return (
     <>
-      <section
-        className="flex flex-col flex-1 bg-gray-900 overflow-hidden
-        h-[calc(100dvh-4rem)]
-        md:h-screen
-      "
-      >
+      <section className="flex flex-col flex-1 bg-gray-900 overflow-hidden h-[100dvh] md:h-screen">
         {/* Header */}
         <div className="shrink-0 px-4 py-3 border-b border-white/10 flex items-center justify-between">
           <h1 className="text-base md:text-xl font-bold text-white flex items-center gap-2 md:my-4 pl-10 md:pl-0">

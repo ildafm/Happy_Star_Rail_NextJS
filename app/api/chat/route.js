@@ -39,6 +39,7 @@ export async function POST(req) {
   try {
     const body = await req.json();
     const message = body.message;
+    const history = body.history || [];
 
     const needsData = isHertaRelated(message);
     const context = needsData ? await getMadamHertaProfile(message) : null;
@@ -51,19 +52,34 @@ export async function POST(req) {
       systemInstruction: HERTA_SYSTEM_PROMPT,
     });
 
+    const geminiHistory = history
+      .filter((msg) => msg.text.trim() !== "")
+      .map((msg) => ({
+        role: msg.role === "user" ? "user" : "model",
+        parts: [{ text: msg.text }],
+      }));
+
+    // Potong dari depan sampai role pertama adalah "user"
+    while (geminiHistory.length > 0 && geminiHistory[0].role !== "user") {
+      geminiHistory.shift();
+    }
+
+    // Buat chat session dengan history
+    const chat = model.startChat({
+      history: geminiHistory,
+    });
+
     const prompt = context
       ? `KONTEN DATA (gunakan ini jika relevan):\n${context}\n\nPERTANYAAN USER:\n${message}`
-      : `PERTANYAAN USER:\n${message}`;
+      : message;
 
-    // ← Pakai generateContentStream
-    const result = await model.generateContentStream(prompt);
+    const result = await chat.sendMessageStream(prompt);
 
     const stream = new ReadableStream({
       async start(controller) {
         for await (const chunk of result.stream) {
           const text = chunk.text();
           if (text) {
-            // Kirim tiap chunk sebagai plain text
             controller.enqueue(new TextEncoder().encode(text));
           }
         }
@@ -80,7 +96,7 @@ export async function POST(req) {
       },
     });
   } catch (err) {
-    console.error("Herta API error:", err.message); // ← lihat di terminal
+    console.error("Herta API error:", err.message);
     return new Response("Terjadi kesalahan sistem. Herta tidak peduli.", {
       status: 500,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
