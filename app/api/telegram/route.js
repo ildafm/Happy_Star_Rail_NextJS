@@ -48,28 +48,70 @@ async function sendTelegram(chatId, text) {
   });
 }
 
-// ← Simpan history per chatId, max 10 pesan (5 pasang)
-const conversationHistory = new Map();
+// ===== MEMORY + TTL =====
 const MAX_HISTORY = 10;
+const TTL_MS = 30 * 60 * 1000; // 30 menit tidak aktif → hapus history
 
-function getHistory(chatId) {
-  return conversationHistory.get(chatId) || [];
+// Struktur: { history: [], lastActive: timestamp }
+const conversationStore = new Map();
+
+function getSession(key) {
+  const session = conversationStore.get(key);
+  if (!session) return [];
+  return session.history;
 }
 
-function addToHistory(chatId, role, text) {
-  const history = getHistory(chatId);
-  history.push({ role, text });
+function addToSession(key, role, text) {
+  const now = Date.now();
+  const session = conversationStore.get(key) || {
+    history: [],
+    lastActive: now,
+  };
 
-  // Potong jika lebih dari MAX_HISTORY
-  if (history.length > MAX_HISTORY) {
-    history.splice(0, history.length - MAX_HISTORY);
+  session.history.push({ role, text });
+  if (session.history.length > MAX_HISTORY) {
+    session.history.splice(0, session.history.length - MAX_HISTORY);
   }
+  session.lastActive = now;
 
-  conversationHistory.set(chatId, history);
+  conversationStore.set(key, session);
+}
+
+function deleteSession(key) {
+  conversationStore.delete(key);
+}
+
+// Cleanup session yang sudah expired
+function cleanupExpiredSessions() {
+  const now = Date.now();
+  for (const [key, session] of conversationStore.entries()) {
+    if (now - session.lastActive > TTL_MS) {
+      conversationStore.delete(key);
+    }
+  }
+}
+
+// ===== HELPER: buat session key =====
+// Private chat  → key = "private_<chatId>"
+// Group chat    → key = "group_<chatId>_<userId>" (pisah per user dalam group)
+function getSessionKey(message) {
+  const chatType = message.chat.type; // "private", "group", "supergroup", "channel"
+  const chatId = message.chat.id;
+  const userId = message.from?.id;
+
+  if (chatType === "private") {
+    return `private_${chatId}`;
+  } else {
+    // Group/supergroup — pisahkan per user supaya history tidak tercampur
+    return `group_${chatId}_${userId}`;
+  }
 }
 
 export async function POST(req) {
   let chatId = null;
+
+  // Jalankan cleanup tiap request (ringan, hanya iterasi Map)
+  cleanupExpiredSessions();
 
   try {
     const body = await req.json();
@@ -81,9 +123,12 @@ export async function POST(req) {
 
     chatId = message.chat.id;
     const userText = message.text;
+    const sessionKey = getSessionKey(message);
+    const isGroup = message.chat.type !== "private";
 
-    // Handle command — tidak perlu masuk history
+    // ===== HANDLE COMMANDS =====
     if (userText.startsWith("/")) {
+      // Di group, hanya respon command yang mention bot atau command eksplisit
       const responses = {
         "/start":
           "Unit Herta aktif.\n\nAturan:\n— Jangan buang waktu Herta dengan pertanyaan bodoh\n— Herta akan menjawab jika dianggap layak\n— Jangan berharap Herta bersikap ramah\n\nSekarang, ada apa?",
@@ -92,17 +137,16 @@ export async function POST(req) {
         "/about":
           "Aku adalah unit robot Herta dari Herta Space Station. Dibuat menyerupai sang Genius itu sendiri.\n\nAnggota ke-83 Genius Society. Emanator Nous. Pencipta Simulated Universe.\n\nCukup sudah perkenalannya.",
         "/ping":
-          "[Peringatan Sistem] Terjadi kesalahan sistem. Dan tebak? Herta tidak peduli.",
-        "/reset": null, // ← khusus, tangani di bawah
+          "[Peringatan Sistem] Terjadi kesalahan sistem. Dan tebak? Herta tidak peduli. Kembali lagi nanti.",
+        "/reset": null,
       };
 
-      // Command reset — hapus history user ini
       if (userText === "/reset") {
-        conversationHistory.delete(chatId);
-        await sendTelegram(
-          chatId,
-          "Memori percakapan dihapus. Herta tidak mengingatmu lagi.",
-        );
+        deleteSession(sessionKey);
+        const resetMsg = isGroup
+          ? "Memori percakapanmu di group ini dihapus. Herta tidak mengingatmu lagi."
+          : "Memori percakapan dihapus. Herta tidak mengingatmu lagi.";
+        await sendTelegram(chatId, resetMsg);
         return new Response("OK", { status: 200 });
       }
 
@@ -113,8 +157,20 @@ export async function POST(req) {
       return new Response("OK", { status: 200 });
     }
 
-    // Ambil history user ini
-    const history = getHistory(chatId);
+    // ===== DI GROUP: hanya respon jika di-mention atau reply ke bot =====
+    if (isGroup) {
+      const botUsername = process.env.TELEGRAM_BOT_USERNAME; // ← tambah env ini
+      const isMentioned = botUsername && userText.includes(`@${botUsername}`);
+      const isReplyToBot = message.reply_to_message?.from?.is_bot === true;
+
+      if (!isMentioned && !isReplyToBot) {
+        // Tidak di-mention dan bukan reply ke bot → abaikan
+        return new Response("OK", { status: 200 });
+      }
+    }
+
+    // ===== PROSES KE GEMINI =====
+    const history = getSession(sessionKey);
 
     const needsData = isHertaRelated(userText);
     const context = needsData ? await getMadamHertaProfile(userText) : null;
@@ -127,13 +183,16 @@ export async function POST(req) {
       systemInstruction: HERTA_SYSTEM_PROMPT,
     });
 
-    // Konversi history ke format Gemini
     const geminiHistory = history
       .filter((msg) => msg.text.trim() !== "")
       .map((msg) => ({
         role: msg.role === "user" ? "user" : "model",
         parts: [{ text: msg.text }],
       }));
+
+    while (geminiHistory.length > 0 && geminiHistory[0].role !== "user") {
+      geminiHistory.shift();
+    }
 
     const chat = model.startChat({ history: geminiHistory });
 
@@ -144,9 +203,8 @@ export async function POST(req) {
     const result = await chat.sendMessage(prompt);
     const reply = result.response.text();
 
-    // Simpan ke history setelah dapat balasan
-    addToHistory(chatId, "user", userText);
-    addToHistory(chatId, "bot", reply);
+    addToSession(sessionKey, "user", userText);
+    addToSession(sessionKey, "bot", reply);
 
     await sendTelegram(chatId, reply);
 
