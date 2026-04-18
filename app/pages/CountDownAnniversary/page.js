@@ -293,7 +293,7 @@ export default function page() {
               style={{ backgroundColor: "#e1c8be" }}
             >
               <img
-                src="https://pbs.twimg.com/media/GhJ_shQW8AAC8LA.jpg"
+                src="/img/herta_profile.jpg"
                 alt="Herta"
                 className="
             w-20 h-20 rounded-full object-cover

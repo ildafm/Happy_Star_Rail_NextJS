@@ -95,13 +95,14 @@ export default function Home() {
       >
         {/* Header */}
         <div className="shrink-0 px-4 py-3 border-b border-white/10 flex items-center justify-between">
-          <h1 className="text-base md:text-xl font-bold text-white flex items-center gap-2 my-4">
+          <h1 className="text-base md:text-xl font-bold text-white flex items-center gap-2 md:my-4 pl-10 md:pl-0">
             🤖 <span>Herta Support Unit</span>
           </h1>
+
           <img
-            src="https://pbs.twimg.com/media/GhJ_shQW8AAC8LA.jpg"
+            src="/img/herta_profile.jpg"
             alt="Herta"
-            className="w-16 h-16 rounded-full object-cover md:hidden"
+            className="w-10 h-10 rounded-full object-cover md:hidden"
           />
         </div>
 
@@ -127,7 +128,7 @@ export default function Home() {
                 {msg.text}
                 {msg.role === "bot" &&
                   i === messages.length - 1 &&
-                  isStreaming && // ← ganti kondisi ini
+                  isStreaming &&
                   msg.text !== "Herta sibuk, apa yang kau inginkan?" && (
                     <span className="inline-block w-0.5 h-3.5 bg-gray-400 ml-0.5 align-middle animate-pulse" />
                   )}

@@ -5,7 +5,7 @@ export default function ProfileBar() {
     <aside className="w-64 bg-gray-800 border-l p-4 hidden md:block">
       <div className="flex flex-col items-center text-center">
         <img
-          src="https://pbs.twimg.com/media/GhJ_shQW8AAC8LA.jpg"
+          src="/img/herta_profile.jpg"
           alt="Herta"
           className="w-32 h-32 rounded-full mb-4 object-cover"
         />

@@ -12,22 +12,22 @@ import {
   Coins,
   Crown,
   Construction,
+  Menu,
+  X,
 } from "lucide-react";
 
-export default function Sidebar({ activePage }) {
+export default function Sidebar() {
   const pathname = usePathname();
   const pagesPath = "/pages";
 
   const [wipToast, setWipToast] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   function showWip() {
     setWipToast(true);
     setTimeout(() => setWipToast(false), 2500);
   }
 
-  // ===== SINGLE SOURCE OF TRUTH =====
-  // Semua perubahan WIP, label, href cukup di sini saja.
-  // Desktop sidebar dan mobile bottom nav keduanya baca dari sini.
   const menuItems = [
     {
       icon: Compass,
@@ -60,7 +60,7 @@ export default function Sidebar({ activePage }) {
       href: "/ngobrol",
       active: false,
       wip: true,
-      dividerBefore: true, // tambah divider sebelum item ini
+      dividerBefore: true,
     },
   ];
 
@@ -88,12 +88,11 @@ export default function Sidebar({ activePage }) {
     },
   ];
 
-  // Gabungan untuk mobile (ambil 5 item pertama dari semua menu)
   const allItems = [...menuItems, ...extraItems];
 
   return (
     <>
-      {/* ===== WIP TOAST NOTIFICATION ===== */}
+      {/* WIP Toast */}
       <div
         className={`fixed top-4 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-2
           bg-yellow-500/90 text-black text-xs font-semibold px-4 py-2.5 rounded-full shadow-lg
@@ -113,9 +112,8 @@ export default function Sidebar({ activePage }) {
           </div>
           Happy Star Rail
         </div>
-
         <nav className="flex-1 px-2 text-sm">
-          {[...menuItems, ...extraItems].map((item, i) => (
+          {allItems.map((item, i) => (
             <div key={i}>
               {item.dividerBefore && <Divider />}
               <MenuItem
@@ -133,24 +131,70 @@ export default function Sidebar({ activePage }) {
         </nav>
       </aside>
 
-      {/* ===== MOBILE BOTTOM NAV ===== */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#111] border-t border-white/10 flex items-center justify-around px-2 py-2">
-        {allItems.slice(0, 5).map((item, i) => (
-          <MobileMenuItem
-            key={i}
-            icon={<item.icon size={20} />}
-            label={item.mobileLabel}
-            href={item.href}
-            active={item.active}
-            badge={item.badge}
-            wip={item.wip}
-            onWip={showWip}
-          />
-        ))}
-      </nav>
+      {/* ===== MOBILE HAMBURGER BUTTON ===== */}
+      <button
+        onClick={() => setDrawerOpen(true)}
+        className="md:hidden fixed top-3.5 left-3 z-50 w-9 h-9 flex items-center justify-center
+    rounded-xl text-gray-300 hover:text-white hover:bg-white/10 transition"
+      >
+        <Menu size={20} />
+      </button>
 
-      {/* Spacer mobile */}
-      <div className="md:hidden h-16" />
+      {/* ===== MOBILE DRAWER OVERLAY ===== */}
+      {drawerOpen && (
+        <div
+          className="md:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+          onClick={() => setDrawerOpen(false)}
+        />
+      )}
+
+      {/* ===== MOBILE DRAWER ===== */}
+      <aside
+        className={`md:hidden fixed top-0 left-0 z-50 h-full w-64 bg-[#111] text-gray-200
+          flex flex-col border-r border-white/10
+          transition-transform duration-300 ease-in-out
+          ${drawerOpen ? "translate-x-0" : "-translate-x-full"}
+        `}
+      >
+        {/* Drawer Header */}
+        <div className="p-4 flex items-center justify-between border-b border-white/10">
+          <div className="flex items-center gap-2 text-base font-bold">
+            <div className="w-7 h-7 rounded-full bg-purple-500 flex items-center justify-center text-white">
+              <Compass size={15} />
+            </div>
+            Happy Star Rail
+          </div>
+          <button
+            onClick={() => setDrawerOpen(false)}
+            className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition"
+          >
+            <X size={16} />
+          </button>
+        </div>
+
+        {/* Drawer Menu */}
+        <nav className="flex-1 px-2 py-2 text-sm overflow-y-auto">
+          {allItems.map((item, i) => (
+            <div key={i}>
+              {item.dividerBefore && <Divider />}
+              <MenuItem
+                icon={<item.icon size={18} />}
+                label={item.label}
+                href={item.href}
+                active={item.active}
+                badge={item.badge}
+                badgeColor={item.badgeColor}
+                wip={item.wip}
+                onWip={() => {
+                  showWip();
+                  setDrawerOpen(false);
+                }}
+                onClick={() => setDrawerOpen(false)} // ← tutup drawer saat navigasi
+              />
+            </div>
+          ))}
+        </nav>
+      </aside>
     </>
   );
 }
@@ -166,6 +210,7 @@ function MenuItem({
   href = "/",
   wip = false,
   onWip,
+  onClick,
 }) {
   if (wip) {
     return (
@@ -194,6 +239,7 @@ function MenuItem({
   return (
     <Link
       href={href}
+      onClick={onClick}
       className={`flex items-center justify-between px-3 py-2 rounded-md cursor-pointer
         ${active ? "bg-white/10 text-white" : "hover:bg-white/5"}
       `}
@@ -209,49 +255,6 @@ function MenuItem({
           {badge}
         </span>
       )}
-    </Link>
-  );
-}
-
-function MobileMenuItem({
-  icon,
-  label,
-  href = "/",
-  active,
-  badge,
-  wip = false,
-  onWip,
-}) {
-  const baseClass = `relative flex flex-col items-center justify-center gap-1 px-3 py-1 rounded-lg min-w-[56px] transition-colors
-    ${active ? "text-purple-400" : wip ? "text-gray-600" : "text-gray-400 hover:text-gray-200"}
-  `;
-
-  const content = (
-    <>
-      {active && (
-        <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-purple-400 rounded-full" />
-      )}
-      {wip ? (
-        <span className="absolute top-0.5 right-2 w-2 h-2 rounded-full bg-yellow-400" />
-      ) : badge ? (
-        <span className="absolute top-0.5 right-2 w-2 h-2 rounded-full bg-orange-500" />
-      ) : null}
-      <span>{icon}</span>
-      <span className="text-[10px] font-medium leading-none">{label}</span>
-    </>
-  );
-
-  if (wip) {
-    return (
-      <button onClick={onWip} className={baseClass}>
-        {content}
-      </button>
-    );
-  }
-
-  return (
-    <Link href={href} className={baseClass}>
-      {content}
     </Link>
   );
 }
