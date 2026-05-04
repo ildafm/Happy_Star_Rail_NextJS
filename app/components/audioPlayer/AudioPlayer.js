@@ -5,13 +5,8 @@ import AudioSelector from "./AudioSelector";
 
 export default function AudioPlayer() {
   const [selectedAudio, setSelectedAudio] = useState("01 Star Rail"); // default music
-  // const [isMuted, setIsMuted] = useState(false);
   const [isPaused, setIsPaused] = useState(true);
   const audioRef = useRef(null);
-
-  //   const toggleMute = () => {
-  //     setIsMuted((prev) => !prev);
-  //   };
 
   const togglePause = () => {
     setIsPaused((prev) => !prev);
@@ -36,7 +31,7 @@ export default function AudioPlayer() {
   }, [isPaused]);
 
   return (
-    <div className={`absolute top-10 md:top-0 left-0 m-4 z-10`}>
+    <div className={`absolute top-10 sm:top-0 left-0 m-4 z-10`}>
       <div className="group relative flex items-center gap-2">
         {/* button pause/unpause */}
         <div>

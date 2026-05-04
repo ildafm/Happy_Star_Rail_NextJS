@@ -1,12 +1,13 @@
 "use client"; // test deploy
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import confetti from "canvas-confetti";
 import { getBackgroundList } from "./fetch";
 import AudioPlayer from "@/app/components/audioPlayer/AudioPlayer";
 import PastelButton from "@/app/components/button/PastelButton";
 import ChangeBackgroundButton from "./components/ChangeBackgroundButton";
 import { getRandomIndex } from "@/app/libs/customHandler";
+import { ANNIVERSARY_CONFIG } from "@/app/constants/anniversary";
 import Link from "next/link";
 
 function getTimeLeft(targetDate) {
@@ -18,70 +19,69 @@ function getTimeLeft(targetDate) {
   let minutes = Math.floor((difference / 1000 / 60) % 60);
   let seconds = Math.floor((difference / 1000) % 60);
 
-  if (days >= 0 && days < 10) {
-    days = `0${days}`;
-  }
-
-  return { days, hours, minutes, seconds };
+  return {
+    days: String(days).padStart(2, "0"),
+    hours: String(hours).padStart(2, "0"),
+    minutes: String(minutes).padStart(2, "0"),
+    seconds: String(seconds).padStart(2, "0"),
+  };
 }
 
 function getTargetDate() {
   const today = new Date();
-  const targetMonth = 4; // April
-  const targetDay = 26;
+  const targetMonth = ANNIVERSARY_CONFIG.TARGET_MONTH; // April
+  const targetDay = ANNIVERSARY_CONFIG.TARGET_DAY;
 
   const thisYear = today.getFullYear();
   const targetThisYear = new Date(thisYear, targetMonth - 1, targetDay);
 
   // Kalau sudah lewat, set ke tahun depan
-  if (today > targetThisYear) {
+  if (today.setHours(0, 0, 0, 0) > targetThisYear) {
     return new Date(thisYear + 1, targetMonth - 1, targetDay);
   }
 
   return targetThisYear;
 }
 
-function getCurrentAnniversary(targetYear) {
-  const getOrdinalSuffix = (n) => {
-    const lastDigit = n % 10;
-    const lastTwoDigits = n % 100;
+function getOrdinalSuffix(n) {
+  const lastDigit = n % 10;
+  const lastTwoDigits = n % 100;
 
-    if (lastTwoDigits >= 11 && lastTwoDigits <= 13) {
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 13) {
+    return "th";
+  }
+
+  switch (lastDigit) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
       return "th";
-    }
-
-    switch (lastDigit) {
-      case 1:
-        return "st";
-      case 2:
-        return "nd";
-      case 3:
-        return "rd";
-      default:
-        return "th";
-    }
-  };
-
-  const releaseDate = 2023;
-  const currentAnniversary = targetYear - releaseDate;
-
-  const suffix = getOrdinalSuffix(currentAnniversary);
-
-  const text = `${currentAnniversary}${suffix}`;
-
-  return text;
+  }
 }
 
-export default function page() {
+function getCurrentAnniversary(targetYear) {
+  const count = targetYear - ANNIVERSARY_CONFIG.RELEASE_YEAR;
+  return `${count}${getOrdinalSuffix(count)}`;
+}
+
+export default function Page() {
   const [targetDate, setTargetDate] = useState(getTargetDate());
   const [timeLeft, setTimeLeft] = useState(getTimeLeft(targetDate));
-  const [isAnniversaryNow, setIsAnniversaryNow] = useState(false); // ubah sesuai tanggal anniversary
+  const [isAnniversaryNow, setIsAnniversaryNow] = useState(false);
   const [finalBackgroundList, setFinalBackgroundList] = useState(null);
   const [backgroundList, setBackgroundList] = useState(null);
   const [currentSelectedBackground, setCurrentSelectedBackground] =
     useState(null);
+  const [fetchError, setFetchError] = useState(null);
 
-  const currentAnniversary = getCurrentAnniversary(targetDate.getFullYear());
+  const currentAnniversary = useMemo(
+    () => getCurrentAnniversary(targetDate.getFullYear()),
+    [targetDate],
+  );
 
   useEffect(() => {
     const checkDateChange = setInterval(() => {
@@ -104,7 +104,6 @@ export default function page() {
       now.getDate() === targetDate.getDate();
 
     if (isTodayAnniversary) {
-      // console.log("Anniversary Now");
       setIsAnniversaryNow(true);
 
       // Jalankan confetti saat ulang tahun
@@ -143,39 +142,37 @@ export default function page() {
     } else {
       setIsAnniversaryNow(false);
     }
-  }, [timeLeft]);
+  }, [targetDate]);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(getTimeLeft(targetDate));
     }, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [targetDate]);
 
   // fetch background list json
   useEffect(() => {
-    // Ubah string JSON menjadi objek JavaScript
-    if (!backgroundList) {
-      // console.log("Fetch background list");
-      const fetchBackgroundList = async () => {
+    // hanya fetch sekali saat mount
+    const fetchData = async () => {
+      try {
         const json = await getBackgroundList();
         setFinalBackgroundList(json);
         setBackgroundList(json);
-      };
-
-      fetchBackgroundList();
-    } else {
-      if (!currentSelectedBackground) {
-        // console.log("Have background list, try to set background...");
-        const randomIndex = getRandomIndex(backgroundList);
-
-        // console.log("choosen background:");
-        const choosenBackgroundData = backgroundList[randomIndex];
-        setCurrentSelectedBackground(choosenBackgroundData);
+      } catch (err) {
+        console.error("[Page] Failed to fetch background list:", err);
+        setFetchError("Gagal memuat background.");
       }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (backgroundList && !currentSelectedBackground) {
+      const randomIndex = getRandomIndex(backgroundList);
+      setCurrentSelectedBackground(backgroundList[randomIndex]);
     }
-  }, [backgroundList]);
-  // console.log(currentSelectedBackground);
+  }, [backgroundList, currentSelectedBackground]);
 
   return (
     <div
@@ -189,19 +186,15 @@ export default function page() {
       }}
     >
       {/* component audio */}
-      <div className="">
-        <div className="">
-          <AudioPlayer />
-        </div>
-        <div className="">
-          <ChangeBackgroundButton
-            backgroundList={backgroundList}
-            setBackgroundList={setBackgroundList}
-            currentSelectedBackground={currentSelectedBackground}
-            setCurrentSelectedBackground={setCurrentSelectedBackground}
-            finalBackgroundList={finalBackgroundList}
-          />
-        </div>
+      <div>
+        <AudioPlayer />
+        <ChangeBackgroundButton
+          backgroundList={backgroundList}
+          setBackgroundList={setBackgroundList}
+          currentSelectedBackground={currentSelectedBackground}
+          setCurrentSelectedBackground={setCurrentSelectedBackground}
+          finalBackgroundList={finalBackgroundList}
+        />
       </div>
 
       <div className="absolute top-0 right-0 bottom-0 left-0 bg-gray-900 opacity-90"></div>
@@ -212,7 +205,6 @@ export default function page() {
           ? `Trailblazers, The ${currentAnniversary} Anniversary is Happening Now!`
           : `Trailblazers, Prepare! ${currentAnniversary} Anniversary Begins In:`}
       </div>
-      {/* end text */}
 
       {/* count down */}
       <div className="flex items-end justify-center z-10">
@@ -224,33 +216,23 @@ export default function page() {
         </div>
         <div className="m-2 sm:m-5">
           <span className="text-[#e1c8be] font-bold text-xl sm:text-5xl">
-            {isAnniversaryNow
-              ? "00"
-              : timeLeft.hours.toString().padStart(2, "0")}
+            {isAnniversaryNow ? "00" : timeLeft.hours}
           </span>
           <p>Hours</p>
         </div>
         <div className="m-2 sm:m-5">
           <span className="text-[#e1c8be] font-bold text-xl sm:text-5xl">
-            {isAnniversaryNow
-              ? "00"
-              : timeLeft.minutes.toString().padStart(2, "0")}
+            {isAnniversaryNow ? "00" : timeLeft.minutes}
           </span>
           <p>Minutes</p>
         </div>
         <div className="m-2 sm:m-5">
-          <span
-            className="text-[#e1c8be] font-bold text-xl sm:text-5xl"
-            // style={{ color: "#e1c8be" }}
-          >
-            {isAnniversaryNow
-              ? "00"
-              : timeLeft.seconds.toString().padStart(2, "0")}
+          <span className="text-[#e1c8be] font-bold text-xl sm:text-5xl">
+            {isAnniversaryNow ? "00" : timeLeft.seconds}
           </span>
           <p>Seconds</p>
         </div>
       </div>
-      {/* end count down */}
 
       {/* buttons */}
       <div className="z-10 mt-5">
@@ -258,13 +240,11 @@ export default function page() {
           {/* button download */}
           <PastelButton
             buttonText={"Download"}
-            navLink={"https://hsr.hoyoverse.com/en-us/"}
+            navLink={ANNIVERSARY_CONFIG.DOWNLOAD_URL}
             targetBlank={true}
           />
-          {/* end button download */}
         </div>
       </div>
-      {/* end buttons */}
 
       {/* Go to herta bot button */}
       <div className="z-10 absolute right-14 bottom-14">
@@ -305,7 +285,6 @@ export default function page() {
           </div>
         </Link>
       </div>
-      {/* end Go to herta bot button */}
     </div>
   );
 }

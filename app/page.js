@@ -6,10 +6,10 @@ const CountdownAnniversary = dynamic(
   () => import("./pages/CountDownAnniversary/page"),
   {
     ssr: false,
-  }
+  },
 );
 
-function page() {
+function Page() {
   return (
     <>
       <CountdownAnniversary />
@@ -17,4 +17,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
