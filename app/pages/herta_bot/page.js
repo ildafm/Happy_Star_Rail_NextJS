@@ -113,28 +113,32 @@ export default function Home() {
             >
               <div
                 className={`
-                  max-w-[85%] md:max-w-[75%]
-                  px-4 py-2.5 rounded-2xl text-sm leading-relaxed backdrop-blur-md
-                  ${
-                    msg.role === "user"
-                      ? "bg-blue-500/80 text-white rounded-br-sm"
-                      : "bg-white/10 text-gray-100 rounded-bl-sm"
-                  }
-                `}
+          max-w-[85%] md:max-w-[75%]
+          px-4 py-2.5 rounded-2xl text-sm leading-relaxed backdrop-blur-md
+          ${
+            msg.role === "user"
+              ? "bg-blue-500/80 text-white rounded-br-sm"
+              : "bg-white/10 text-gray-100 rounded-bl-sm"
+          }
+        `}
               >
-                {/* Cursor kedip di pesan bot terakhir yang masih streaming */}
-                {msg.text}
-                {msg.role === "bot" &&
-                  i === messages.length - 1 &&
-                  isStreaming &&
-                  msg.text !== "Herta sibuk, apa yang kau inginkan?" && (
-                    <span className="inline-block w-0.5 h-3.5 bg-gray-400 ml-0.5 align-middle animate-pulse" />
-                  )}
+                {msg.role === "bot" ? (
+                  <span className="whitespace-pre-wrap">
+                    {msg.text}
+                    {i === messages.length - 1 &&
+                      isStreaming &&
+                      msg.text !== "Herta sibuk, apa yang kau inginkan?" && (
+                        <span className="inline-block w-0.5 h-3.5 bg-gray-400 ml-0.5 align-middle animate-pulse" />
+                      )}
+                  </span>
+                ) : (
+                  msg.text
+                )}
               </div>
             </div>
           ))}
 
-          {/* Loading dots — muncul sebelum stream mulai */}
+          {/* Loading dots */}
           {isLoading && (
             <div className="flex justify-start">
               <div className="bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl rounded-bl-sm flex items-center gap-1.5">
