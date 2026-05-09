@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import ProfileBar from "./components/ProfileBar";
 import { Send } from "lucide-react";
+import ProfileBar from "./_components/ProfileBar";
 
 export default function Home() {
   const [input, setInput] = useState("");

@@ -9,9 +9,6 @@ export const getBackgroundList = async () => {
     if (!res.ok) throw new Error("Gagal fetch JSON");
 
     const json = await res.json();
-    // console.log("Isi JSON:", json);
-    // console.log("Panjang JSON:", json.length);
-    // console.log("Complete fetching");
 
     const filtered = isMobile
       ? json.filter((json) => json.portrait_suitable === "TRUE") // jika mobile filter portrait_suitable TRUE

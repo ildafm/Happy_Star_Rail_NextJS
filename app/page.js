@@ -2,8 +2,8 @@
 import React from "react";
 import dynamic from "next/dynamic";
 
-const CountdownAnniversary = dynamic(
-  () => import("./pages/CountDownAnniversary/page"),
+const CountdownPage = dynamic(
+  () => import("@/app/components/templates/countdown/CountdownPage.js"),
   {
     ssr: false,
   },
@@ -12,7 +12,7 @@ const CountdownAnniversary = dynamic(
 function Page() {
   return (
     <>
-      <CountdownAnniversary />
+      <CountdownPage />
     </>
   );
 }

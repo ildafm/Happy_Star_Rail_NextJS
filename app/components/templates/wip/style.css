@@ -1,0 +1,266 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+
+.W {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #0d0d12;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Rajdhani', sans-serif;
+    position: relative;
+}
+
+.W-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.W-nb { position: absolute; border-radius: 50%; filter: blur(80px); }
+.W-nb1 { width: 500px; height: 500px; top: -120px; left: -120px; background: #4F46E5; opacity: 0.12; }
+.W-nb2 { width: 400px; height: 400px; bottom: -80px; right: -60px; background: #7C3AED; opacity: 0.12; }
+.W-nb3 { width: 350px; height: 350px; top: 40%; left: 30%; background: #1E40AF; opacity: 0.1; }
+
+.W-stars { position: absolute; inset: 0; pointer-events: none; }
+.W-star {
+    position: absolute; background: #fff; border-radius: 50%;
+    animation: W-twinkle var(--dur) var(--delay) ease-in-out infinite alternate;
+}
+@keyframes W-twinkle {
+    0%   { opacity: 0.06; transform: scale(0.8); }
+    100% { opacity: 0.55; transform: scale(1.2); }
+}
+
+.W-particle {
+    position: absolute; border-radius: 50%; opacity: 0; pointer-events: none;
+    animation: W-float var(--pdur) var(--pdelay) ease-in-out infinite;
+}
+@keyframes W-float {
+    0%   { transform: translateY(0) scale(0.5); opacity: 0; }
+    20%  { opacity: 0.4; }
+    80%  { opacity: 0.12; }
+    100% { transform: translateY(-90px) scale(1.4); opacity: 0; }
+}
+
+.W-scan {
+    position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    background: repeating-linear-gradient(
+    0deg, transparent, transparent 3px,
+    rgba(100,70,220,0.018) 3px, rgba(100,70,220,0.018) 4px
+    );
+}
+
+.W-corner { position: absolute; width: 36px; height: 36px; pointer-events: none; z-index: 2; }
+.W-tl { top: 14px; left: 14px; border-top: 1px solid rgba(123,97,255,0.45); border-left: 1px solid rgba(123,97,255,0.45); }
+.W-tr { top: 14px; right: 14px; border-top: 1px solid rgba(123,97,255,0.45); border-right: 1px solid rgba(123,97,255,0.45); }
+.W-bl { bottom: 14px; left: 14px; border-bottom: 1px solid rgba(123,97,255,0.45); border-left: 1px solid rgba(123,97,255,0.45); }
+.W-br { bottom: 14px; right: 14px; border-bottom: 1px solid rgba(123,97,255,0.45); border-right: 1px solid rgba(123,97,255,0.45); }
+
+.W-body {
+    position: relative; z-index: 10;
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; padding: 40px 24px;
+    max-width: 580px; width: 100%;
+}
+
+.W-iconwrap { position: relative; width: 84px; height: 84px; margin-bottom: 26px; }
+.W-ring { position: absolute; border-radius: 50%; }
+.W-r1 { inset: 0;    border: 1.5px solid rgba(123,97,255,0.4); animation: W-spin 8s linear infinite; }
+.W-r2 { inset: 10px; border: 1px solid rgba(96,165,250,0.3);   animation: W-spin 5s linear infinite reverse; }
+.W-r3 { inset: 20px; border: 1px dashed rgba(249,168,212,0.2); animation: W-spin 12s linear infinite; }
+.W-rc {
+    position: absolute; inset: 24px; border-radius: 50%;
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #BE185D 100%);
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+    box-shadow: 0 0 22px rgba(123,97,255,0.5), 0 0 44px rgba(123,97,255,0.12);
+}
+@keyframes W-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.W-badge {
+    font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 3px;
+    color: rgba(167,139,250,0.6); margin-bottom: 14px; text-transform: uppercase;
+}
+.W-badge::before, .W-badge::after { content: '—'; margin: 0 6px; opacity: 0.35; }
+
+.W-title {
+    font-family: 'Orbitron', sans-serif; font-weight: 900;
+    font-size: clamp(22px, 4vw, 48px); line-height: 1; letter-spacing: -0.5px;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #E0D7FF 0%, #A78BFA 30%, #60A5FA 70%, #F9A8D4 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.W-title.glitch { animation: W-glitch 0.2s steps(2) forwards; }
+@keyframes W-glitch {
+    0%   { text-shadow: 2px 0 #7B61FF, -2px 0 #60A5FA; }
+    50%  { text-shadow: -3px 0 #F9A8D4, 3px 0 #7B61FF; }
+    100% { text-shadow: none; }
+}
+
+.W-sub {
+    font-family: 'Orbitron', sans-serif; font-weight: 400;
+    font-size: clamp(9px, 1.6vw, 13px); color: #60A5FA;
+    letter-spacing: 5px; text-transform: uppercase; margin-bottom: 28px; opacity: 0.8;
+}
+
+.W-divider { display: flex; align-items: center; gap: 10px; width: 100%; max-width: 400px; margin-bottom: 22px; }
+.W-dl  { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(123,97,255,0.45)); }
+.W-dlr { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(123,97,255,0.45), transparent); }
+.W-gem { width: 7px; height: 7px; background: #7B61FF; transform: rotate(45deg); box-shadow: 0 0 8px rgba(123,97,255,0.7); }
+
+.W-desc {
+    font-size: 13px; line-height: 1.7; color: rgba(180,170,240,0.48);
+    max-width: 340px; margin-bottom: 30px;
+}
+
+.W-prog { width: 100%; max-width: 400px; margin-bottom: 26px; }
+.W-prog-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.W-prog-lbl { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; transition: color 0.4s; }
+.W-prog-pct { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 700; transition: color 0.4s; }
+.W-prog-track {
+    height: 5px; background: rgba(123,97,255,0.1); border-radius: 999px;
+    position: relative; border: 1px solid rgba(123,97,255,0.12);
+}
+.W-prog-fill {
+    height: 100%; border-radius: 999px; position: relative;
+    transition: width 0.08s linear, background 0.4s, box-shadow 0.4s;
+}
+.W-prog-dot {
+    position: absolute; right: -2px; top: 50%; transform: translateY(-50%);
+    width: 11px; height: 11px; border-radius: 50%;
+    transition: background 0.4s, box-shadow 0.4s;
+}
+
+.W-chips { display: flex; gap: 8px; margin-top: 12px; justify-content: center; flex-wrap: wrap; }
+.W-chip { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 2px; padding: 3px 9px; border-radius: 2px; }
+.W-cn { color: rgba(150,130,240,0.5); border: 1px solid rgba(123,97,255,0.12); background: rgba(123,97,255,0.04); }
+.W-ce { color: rgba(248,113,113,0.7); border: 1px solid rgba(220,38,38,0.2); background: rgba(220,38,38,0.05); animation: W-ep 0.6s ease-in-out infinite; }
+.W-cw { color: rgba(250,204,21,0.65); border: 1px solid rgba(250,204,21,0.18); background: rgba(250,204,21,0.04); }
+@keyframes W-ep { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+.W-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; width: 100%; max-width: 400px; margin-bottom: 26px; }
+.W-card {
+    background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.06);
+    padding: 12px 10px; text-align: center; position: relative; overflow: hidden;
+}
+.W-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, #4F46E5, #7B61FF); }
+.W-cv { font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 700; color: #c4baff; display: block; margin-bottom: 4px; }
+.W-cl { font-family: 'Share Tech Mono', monospace; font-size: 8px; letter-spacing: 2px; color: rgba(150,130,240,0.4); text-transform: uppercase; }
+
+.W-notify { display: flex; width: 100%; max-width: 340px; }
+.W-input {
+    flex: 1; background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(123,97,255,0.2); border-right: none;
+    color: #c4baff; font-family: 'Rajdhani', sans-serif; font-size: 13px;
+    padding: 9px 12px; outline: none; transition: border-color 0.2s;
+}
+.W-input::placeholder { color: rgba(150,130,240,0.28); }
+.W-input:focus { border-color: rgba(123,97,255,0.5); }
+.W-btn {
+    background: linear-gradient(135deg, #4F46E5, #7B61FF); border: none; color: #fff;
+    font-family: 'Orbitron', sans-serif; font-size: 9px; font-weight: 700;
+    letter-spacing: 2px; padding: 9px 14px; cursor: pointer;
+    text-transform: uppercase; transition: opacity 0.2s; white-space: nowrap;
+}
+.W-btn:hover { opacity: 0.82; }
+
+.W-foot {
+    margin-top: 32px; font-family: 'Share Tech Mono', monospace;
+    font-size: 9px; letter-spacing: 3px; color: rgba(123,97,255,0.2); text-transform: uppercase;
+}
+
+/* Media Query Khusus Laptop/Desktop */
+@media (min-width: 1024px) {
+    .W {
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .W-body {
+        max-width: 900px; 
+        height: 100vh; /* Memenuhi tinggi layar */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center; /* Memastikan semua konten di tengah vertikal */
+        padding: 0;
+        gap: 1.5vh; 
+    }
+
+    /* FIX ICON: Memaksa semua ring mengikuti ukuran container baru */
+    .W-iconwrap {
+        width: 120px;  
+        height: 120px;
+        margin-bottom: 2vh;
+        flex-shrink: 0; /* Mencegah ikon gepeng jika layar pendek */
+    }
+
+    /* Reset posisi ring agar tetap simetris */
+    .W-r1 { inset: 0; border-width: 2px; }
+    .W-r2 { inset: 12px !important; } /* Paksa nilai baru */
+    .W-r3 { inset: 24px !important; }
+    
+    .W-rc {
+        inset: 32px !important; /* Inti tengah */
+        font-size: 32px; /* Ukuran emoji/ikon diperbesar */
+        box-shadow: 0 0 30px rgba(123,97,255,0.5);
+    }
+
+    /* Teks Judul & Sub - Dibuat lebih besar dan mantap */
+    .W-title {
+        font-size: clamp(48px, 5.5vw, 72px); 
+        margin-bottom: 0.5vh;
+        white-space: nowrap; /* Mencegah judul pecah jadi 2 baris di laptop */
+    }
+
+    .W-sub {
+        font-size: 16px;
+        letter-spacing: 12px;
+        margin-bottom: 3vh;
+    }
+
+    /* Deskripsi dibuat lebih lebar dan teks lebih besar */
+    .W-desc {
+        max-width: 550px; 
+        font-size: 17px; 
+        line-height: 1.6;
+        margin-bottom: 3vh;
+        color: rgba(180, 170, 240, 0.8);
+    }
+
+    /* Progress Bar dan Cards */
+    .W-prog, .W-cards {
+        max-width: 550px;
+        width: 100%;
+    }
+
+    .W-cv { font-size: 32px; } /* Angka statistik */
+    .W-cl { font-size: 11px; }
+
+    /* Input Email & Tombol */
+    .W-notify {
+        max-width: 500px;
+        margin-top: 2vh;
+    }
+
+    .W-input { font-size: 16px; padding: 14px 18px; }
+    .W-btn { font-size: 12px; padding: 14px 24px; }
+
+    /* Footer tetap di dasar layar */
+    .W-foot {
+        position: absolute;
+        bottom: 3vh;
+        font-size: 12px;
+        margin-top: 0;
+    }
+}
+
+/* Tambahan: Jika layar laptop terlalu pendek (short screen) */
+@media (max-height: 720px) and (min-width: 1024px) {
+    .W-body {
+        transform: scale(0.9); /* Sedikit mengecilkan seluruh UI agar tidak sesak */
+    }
+}

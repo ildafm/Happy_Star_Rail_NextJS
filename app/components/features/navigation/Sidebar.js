@@ -14,11 +14,11 @@ import {
   Construction,
   Menu,
   X,
+  Loader,
 } from "lucide-react";
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const pagesPath = "/pages";
 
   const [wipToast, setWipToast] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -41,25 +41,25 @@ export default function Sidebar() {
       icon: Bell,
       label: "Home Page",
       mobileLabel: "Home",
-      href: `${pagesPath}/main_page`,
-      active: pathname === pagesPath,
+      href: `/home`,
+      active: pathname === "/home",
       wip: true,
-    },
-    {
-      icon: Image,
-      label: "Herta Bot",
-      mobileLabel: "Herta Bot",
-      href: `${pagesPath}/herta_bot`,
-      active: pathname.startsWith(`${pagesPath}/herta_bot`),
-      wip: false,
     },
     {
       icon: MessageCircle,
-      label: "Ngobrol",
-      mobileLabel: "Ngobrol",
-      href: "/ngobrol",
-      active: false,
-      wip: true,
+      label: "Herta Bot",
+      mobileLabel: "Herta Bot",
+      href: `/herta-bot`,
+      active: pathname === "/herta-bot",
+      wip: false,
+    },
+    {
+      icon: Image,
+      label: "Buat Gambar",
+      mobileLabel: "Buat Gambar",
+      href: `/generate-image`,
+      active: pathname === "/generate-image",
+      wip: false,
       dividerBefore: true,
     },
   ];
@@ -85,6 +85,14 @@ export default function Sidebar() {
       badgeColor: "bg-indigo-500",
       active: false,
       wip: true,
+    },
+    {
+      icon: Loader,
+      label: "Work In Progress",
+      mobileLabel: "WIP",
+      href: "/work-in-progress",
+      active: false,
+      wip: false,
     },
   ];
 

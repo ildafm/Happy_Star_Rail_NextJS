@@ -2,13 +2,13 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import confetti from "canvas-confetti";
-import { getBackgroundList } from "./fetch";
-import AudioPlayer from "@/app/components/audioPlayer/AudioPlayer";
-import PastelButton from "@/app/components/button/PastelButton";
-import ChangeBackgroundButton from "./components/ChangeBackgroundButton";
+import { getBackgroundList } from "./service";
 import { getRandomIndex } from "@/app/libs/customHandler";
 import { ANNIVERSARY_CONFIG } from "@/app/constants/anniversary";
 import Link from "next/link";
+import PastelButton from "../../ui/button/PastelButton";
+import AudioPlayer from "../../features/audio-player/AudioPlayer";
+import ChangeBackgroundButton from "./_components/ChangeBackgroundButton";
 
 function getTimeLeft(targetDate) {
   const now = new Date();
@@ -248,7 +248,7 @@ export default function Page() {
 
       {/* Go to herta bot button */}
       <div className="z-10 absolute right-14 bottom-14">
-        <Link href={"/pages/herta_bot"}>
+        <Link href={"/herta-bot"}>
           <div className="group relative flex items-center justify-end">
             {/* Teks slide keluar ke kiri */}
             <div
