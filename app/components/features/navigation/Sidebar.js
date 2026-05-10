@@ -15,6 +15,9 @@ import {
   Menu,
   X,
   Loader,
+  ChevronLeft,
+  ChevronRight,
+  ShieldBan,
 } from "lucide-react";
 
 export default function Sidebar() {
@@ -22,6 +25,7 @@ export default function Sidebar() {
 
   const [wipToast, setWipToast] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
 
   function showWip() {
     setWipToast(true);
@@ -47,12 +51,21 @@ export default function Sidebar() {
     },
     {
       icon: MessageCircle,
+      label: "Chat",
+      mobileLabel: "Chat",
+      href: `/chat-with-bot`,
+      active: pathname === "/chat-with-bot",
+      wip: false,
+    },
+    {
+      icon: MessageCircle,
       label: "Herta Bot",
       mobileLabel: "Herta Bot",
       href: `/herta-bot`,
       active: pathname === "/herta-bot",
       wip: false,
     },
+
     {
       icon: Image,
       label: "Buat Gambar",
@@ -89,8 +102,16 @@ export default function Sidebar() {
     {
       icon: Loader,
       label: "Work In Progress",
-      mobileLabel: "WIP",
+      mobileLabel: "WIP Page",
       href: "/work-in-progress",
+      active: false,
+      wip: false,
+    },
+    {
+      icon: ShieldBan,
+      label: "404 Not Found",
+      mobileLabel: "404 Page",
+      href: "/not-found",
       active: false,
       wip: false,
     },
@@ -113,22 +134,35 @@ export default function Sidebar() {
       </div>
 
       {/* ===== DESKTOP SIDEBAR ===== */}
-      <aside className="hidden md:flex w-64 bg-[#111] text-gray-200 flex-col border-r border-white/10 min-h-screen">
-        <div className="p-4 text-lg font-bold flex items-center gap-2">
-          {/* <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white">
-            <Compass size={18} />
-          </div> */}
+      <aside
+        className={`hidden md:flex flex-col bg-[#111] text-gray-200 border-r border-white/10 min-h-screen
+          relative transition-all duration-300 ease-in-out
+          ${collapsed ? "w-[60px]" : "w-64"}
+        `}
+      >
+        {/* Header */}
+        <div
+          className={`p-4 flex items-center border-b border-white/10 gap-2
+            ${collapsed ? "justify-center" : ""}
+          `}
+        >
           <img
-            src="/img/pompom_icon.ico"
+            src="/img/pompom-icon.ico"
             alt="icon"
-            className="w-7 h-7 rounded-full object-cover"
+            className="w-7 h-7 rounded-full object-cover flex-shrink-0"
           />
-          Happy Star Rail
+          {!collapsed && (
+            <span className="text-lg font-bold whitespace-nowrap overflow-hidden flex-1">
+              Happy Star Rail
+            </span>
+          )}
         </div>
-        <nav className="flex-1 px-2 text-sm">
+
+        {/* Nav */}
+        <nav className="flex-1 px-2 py-2 text-sm">
           {allItems.map((item, i) => (
             <div key={i}>
-              {item.dividerBefore && <Divider />}
+              {item.dividerBefore && <Divider collapsed={collapsed} />}
               <MenuItem
                 icon={<item.icon size={18} />}
                 label={item.label}
@@ -138,10 +172,24 @@ export default function Sidebar() {
                 badgeColor={item.badgeColor}
                 wip={item.wip}
                 onWip={showWip}
+                collapsed={collapsed}
               />
             </div>
           ))}
         </nav>
+
+        {/* Toggle tab — always visible, sticks to the right edge of sidebar */}
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          title={collapsed ? "Expand sidebar" : "Minimize sidebar"}
+          className="absolute -right-3.5 top-1/2 -translate-y-1/2
+            w-7 h-12 flex items-center justify-center
+            bg-[#1a1a1a] border border-white/15 rounded-r-lg
+            text-gray-400 hover:text-white hover:bg-[#252525]
+            shadow-md transition-all duration-150 z-10"
+        >
+          {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+        </button>
       </aside>
 
       {/* ===== MOBILE HAMBURGER BUTTON ===== */}
@@ -172,11 +220,8 @@ export default function Sidebar() {
         {/* Drawer Header */}
         <div className="p-4 flex items-center justify-between border-b border-white/10">
           <div className="flex items-center gap-2 text-base font-bold">
-            {/* <div className="w-7 h-7 rounded-full bg-purple-500 flex items-center justify-center text-white">
-              <Compass size={15} />
-            </div> */}
             <img
-              src="/img/pompom_icon.ico"
+              src="/img/pompom-icon.ico"
               alt="icon"
               className="w-7 h-7 rounded-full object-cover"
             />
@@ -207,7 +252,7 @@ export default function Sidebar() {
                   showWip();
                   setDrawerOpen(false);
                 }}
-                onClick={() => setDrawerOpen(false)} // ← tutup drawer saat navigasi
+                onClick={() => setDrawerOpen(false)}
               />
             </div>
           ))}
@@ -229,7 +274,51 @@ function MenuItem({
   wip = false,
   onWip,
   onClick,
+  collapsed = false,
 }) {
+  // Collapsed mode: icon only + hover tooltip label
+  if (collapsed) {
+    const baseClass = `relative group w-full flex items-center justify-center px-0 py-2.5 rounded-md cursor-pointer
+      transition-colors duration-150
+      ${active ? "bg-white/10 text-white" : "hover:bg-white/5 text-gray-400 hover:text-white"}
+      ${wip ? "opacity-60" : ""}
+    `;
+
+    const tooltip = (
+      <span
+        className="absolute left-full ml-3 top-1/2 -translate-y-1/2
+          bg-[#222] text-white text-xs font-medium px-3 py-1.5 rounded-md shadow-lg
+          whitespace-nowrap pointer-events-none z-50
+          opacity-0 group-hover:opacity-100
+          translate-x-1 group-hover:translate-x-0
+          transition-all duration-200 ease-out
+          border border-white/10"
+      >
+        {label}
+        {wip && (
+          <Construction size={10} className="inline ml-1.5 text-yellow-400" />
+        )}
+      </span>
+    );
+
+    if (wip) {
+      return (
+        <button onClick={onWip} className={baseClass}>
+          <span>{icon}</span>
+          {tooltip}
+        </button>
+      );
+    }
+
+    return (
+      <Link href={href} onClick={onClick} className={baseClass}>
+        <span>{icon}</span>
+        {tooltip}
+      </Link>
+    );
+  }
+
+  // Expanded mode: original behavior
   if (wip) {
     return (
       <button
@@ -277,6 +366,6 @@ function MenuItem({
   );
 }
 
-function Divider() {
-  return <div className="my-3 h-px bg-white/10" />;
+function Divider({ collapsed = false }) {
+  return <div className={`my-3 h-px bg-white/10 ${collapsed ? "mx-2" : ""}`} />;
 }
