@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import "./style.css";
 
 // ═══════════════════════════════════════════════════
 // 🔧 STEP 1 — DATA CONFIGURATION
@@ -14,64 +15,7 @@ import { useRouter } from "next/navigation";
 //   image    → path ke foto (taruh di /public/bots/) atau URL
 //   color    → accent color: "blue"|"gold"|"purple"|"teal"|"red"|"green"
 // ═══════════════════════════════════════════════════
-const bots = [
-  {
-    id: "herta",
-    name: "Herta",
-    title: "Genius Society #83",
-    affil: "Herta Station Space",
-    image: "/img/herta-profile.jpg",
-    color: "purple",
-  },
-  {
-    id: "himeko",
-    name: "Himeko",
-    title: "Trailblazer",
-    affil: "Astral Express",
-    image: "/img/himeko-profile.jpg",
-    color: "red",
-  },
-  {
-    id: "march-7th",
-    name: "March 7th",
-    title: "Trailblazer",
-    affil: "Astral Express",
-    image: "/img/march-7th.jpg",
-    color: "teal",
-  },
-  {
-    id: "welt",
-    name: "Welt",
-    title: "Trailblazer",
-    affil: "Astral Express",
-    image: "/img/welt.jpg",
-    color: "gold",
-  },
-  {
-    id: "dan-heng",
-    name: "Dan Heng",
-    title: "Trailblazer",
-    affil: "Astral Express",
-    image: "/img/dan-heng.jpg",
-    color: "green",
-  },
-  {
-    id: "pom-pom",
-    name: "Pom Pom",
-    title: "Trailblazer",
-    affil: "Astral Express",
-    image: "/img/pompom-icon.ico",
-    color: "red",
-  },
-  {
-    id: "kafka",
-    name: "Kafka",
-    title: "Stellaron Hunter",
-    affil: "Stellaron Hunter",
-    image: "/img/kafka-profile.jpg",
-    color: "purple",
-  },
-];
+import { bots } from "@/app/constants/botList";
 
 // ═══════════════════════════════════════════════════
 // 🔧 STEP 2 — PAGINATION CONFIG
@@ -80,71 +24,13 @@ const bots = [
 //     Ubah ke angka yang sesuai kebutuhan kamu.
 // ═══════════════════════════════════════════════════
 const ITEMS_PER_PAGE_DESKTOP = 5;
-const ITEMS_PER_PAGE_MOBILE = 4;
+const ITEMS_PER_PAGE_MOBILE = 5;
 
 // ═══════════════════════════════════════════════════
 // 🔧 STEP 3 — COLOR ACCENT MAP
 // ✅ FIX: Tambah "green" yang sebelumnya hilang dan bikin crash
 // ═══════════════════════════════════════════════════
-const accentMap = {
-  purple: {
-    glow: "#a78bfa",
-    foil1: "#7c3aed",
-    foil2: "#a78bfa",
-    foil3: "#c4b5fd",
-    badge: "rgba(167,139,250,0.15)",
-    badgeText: "#c4b5fd",
-    border: "rgba(167,139,250,0.4)",
-  },
-  gold: {
-    glow: "#fbbf24",
-    foil1: "#b45309",
-    foil2: "#f59e0b",
-    foil3: "#fde68a",
-    badge: "rgba(251,191,36,0.15)",
-    badgeText: "#fde68a",
-    border: "rgba(251,191,36,0.4)",
-  },
-  blue: {
-    glow: "#38bdf8",
-    foil1: "#0369a1",
-    foil2: "#38bdf8",
-    foil3: "#bae6fd",
-    badge: "rgba(56,189,248,0.15)",
-    badgeText: "#bae6fd",
-    border: "rgba(56,189,248,0.4)",
-  },
-  teal: {
-    glow: "#2dd4bf",
-    foil1: "#0f766e",
-    foil2: "#2dd4bf",
-    foil3: "#99f6e4",
-    badge: "rgba(45,212,191,0.15)",
-    badgeText: "#99f6e4",
-    border: "rgba(45,212,191,0.4)",
-  },
-  red: {
-    glow: "#f87171",
-    foil1: "#991b1b",
-    foil2: "#f87171",
-    foil3: "#fecaca",
-    badge: "rgba(248,113,113,0.15)",
-    badgeText: "#fecaca",
-    border: "rgba(248,113,113,0.4)",
-  },
-  // ✅ BARU — warna yang hilang sebelumnya
-  green: {
-    glow: "#4ade80",
-    foil1: "#166534",
-    foil2: "#4ade80",
-    foil3: "#bbf7d0",
-    badge: "rgba(74,222,128,0.15)",
-    badgeText: "#bbf7d0",
-    border: "rgba(74,222,128,0.4)",
-  },
-};
-
-const getAccent = (color) => accentMap[color] ?? accentMap.blue;
+ import { getAccent } from "@/app/constants/accentColors";
 
 // ═══════════════════════════════════════════════════
 // DESKTOP CARD — card vertikal seperti semula
@@ -739,11 +625,6 @@ export default function BotListPage() {
 
       <main
         style={{
-          /*
-           * Ngepas tepat di area konten (bukan seluruh viewport).
-           * Pakai height: 100% bukan 100vw/100dvh supaya tidak
-           * menimpa layout sidebar dari Next.js / parent wrapper.
-           */
           height: "100%",
           width: "100%",
           overflow: "hidden",

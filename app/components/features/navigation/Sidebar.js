@@ -57,14 +57,14 @@ export default function Sidebar() {
       active: pathname === "/chat-with-bot",
       wip: false,
     },
-    {
-      icon: MessageCircle,
-      label: "Herta Bot",
-      mobileLabel: "Herta Bot",
-      href: `/herta-bot`,
-      active: pathname === "/herta-bot",
-      wip: false,
-    },
+    // {
+    //   icon: MessageCircle,
+    //   label: "Herta Bot",
+    //   mobileLabel: "Herta Bot",
+    //   href: `/herta-bot`,
+    //   active: pathname === "/herta-bot",
+    //   wip: false,
+    // },
 
     {
       icon: Image,

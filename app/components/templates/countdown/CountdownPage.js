@@ -248,7 +248,7 @@ export default function Page() {
 
       {/* Go to herta bot button */}
       <div className="z-10 absolute right-14 bottom-14">
-        <Link href={"/herta-bot"}>
+        <Link href={"/chat-with-bot/herta"}>
           <div className="group relative flex items-center justify-end">
             {/* Teks slide keluar ke kiri */}
             <div
