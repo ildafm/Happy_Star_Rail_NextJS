@@ -1,5 +1,3 @@
-// app/api/chat/route.js
-
 import { BOT_CONFIGS, DEFAULT_CONFIG } from "@/app/libs/botConfigs";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 

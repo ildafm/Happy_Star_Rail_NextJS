@@ -1,8 +1,8 @@
 // telegram
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { HERTA_SYSTEM_PROMPT } from "@/app/libs/botPrompts";
-import { getMadamHertaProfile } from "@/app/libs/botContexts";
+import { HERTA_SYSTEM_PROMPT } from "@/app/libs/hertaBotPrompt";
+import { getMadamHertaProfile } from "@/app/libs/getMadamHertaProfile";
 
 const HERTA_KEYWORDS = [
   "herta",
