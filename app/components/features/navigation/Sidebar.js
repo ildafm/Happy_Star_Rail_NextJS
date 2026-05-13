@@ -54,7 +54,7 @@ export default function Sidebar() {
       label: "Chat",
       mobileLabel: "Chat",
       href: `/chat-with-bot`,
-      active: pathname === "/chat-with-bot",
+      active: pathname.startsWith("/chat-with-bot"),
       wip: false,
     },
     // {
