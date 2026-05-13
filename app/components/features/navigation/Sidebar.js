@@ -4,6 +4,9 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 
+import { useAccent } from "@/app/context/accentContext";
+import { getAccent } from "@/app/constants/accentColors";
+
 import {
   Compass,
   Image,
@@ -21,6 +24,17 @@ import {
 } from "lucide-react";
 
 export default function Sidebar() {
+  const { accentKey } = useAccent();
+  const accent = getAccent(accentKey);
+
+  const accentVars = {
+    "--sb-glow": accent.glow,
+    "--sb-border": accent.border,
+    "--sb-foil1": accent.foil1,
+    "--sb-bg1": accent.bg1,
+    "--sb-bg2": accent.bg2,
+  };
+
   const pathname = usePathname();
 
   const [wipToast, setWipToast] = useState(false);
@@ -57,22 +71,13 @@ export default function Sidebar() {
       active: pathname.startsWith("/chat-with-bot"),
       wip: false,
     },
-    // {
-    //   icon: MessageCircle,
-    //   label: "Herta Bot",
-    //   mobileLabel: "Herta Bot",
-    //   href: `/herta-bot`,
-    //   active: pathname === "/herta-bot",
-    //   wip: false,
-    // },
-
     {
       icon: Image,
       label: "Buat Gambar",
       mobileLabel: "Buat Gambar",
       href: `/generate-image`,
       active: pathname === "/generate-image",
-      wip: false,
+      wip: true,
       dividerBefore: true,
     },
   ];
@@ -135,16 +140,22 @@ export default function Sidebar() {
 
       {/* ===== DESKTOP SIDEBAR ===== */}
       <aside
-        className={`hidden md:flex flex-col bg-[#111] text-gray-200 border-r border-white/10 min-h-screen
-          relative transition-all duration-300 ease-in-out
+        className={`hidden md:flex flex-col text-gray-200 min-h-screen relative
+          transition-all duration-300 ease-in-out
           ${collapsed ? "w-[60px]" : "w-64"}
         `}
+        style={{
+          ...accentVars,
+          backgroundColor: "var(--sb-bg1)",
+          borderRight: "1px solid var(--sb-border)",
+          transition:
+            "background-color 0.4s, border-color 0.4s, width 0.3s ease-in-out",
+        }}
       >
         {/* Header */}
         <div
-          className={`p-4 flex items-center border-b border-white/10 gap-2
-            ${collapsed ? "justify-center" : ""}
-          `}
+          className={`p-4 flex items-center gap-2 ${collapsed ? "justify-center" : ""}`}
+          style={{ borderBottom: "1px solid var(--sb-border)" }}
         >
           <img
             src="/img/pompom-icon.ico"
@@ -162,7 +173,9 @@ export default function Sidebar() {
         <nav className="flex-1 px-2 py-2 text-sm">
           {allItems.map((item, i) => (
             <div key={i}>
-              {item.dividerBefore && <Divider collapsed={collapsed} />}
+              {item.dividerBefore && (
+                <Divider collapsed={collapsed} accent={accent} />
+              )}
               <MenuItem
                 icon={<item.icon size={18} />}
                 label={item.label}
@@ -173,20 +186,24 @@ export default function Sidebar() {
                 wip={item.wip}
                 onWip={showWip}
                 collapsed={collapsed}
+                accent={accent}
               />
             </div>
           ))}
         </nav>
 
-        {/* Toggle tab — always visible, sticks to the right edge of sidebar */}
+        {/* Toggle tab */}
         <button
           onClick={() => setCollapsed(!collapsed)}
           title={collapsed ? "Expand sidebar" : "Minimize sidebar"}
           className="absolute -right-3.5 top-1/2 -translate-y-1/2
-            w-7 h-12 flex items-center justify-center
-            bg-[#1a1a1a] border border-white/15 rounded-r-lg
-            text-gray-400 hover:text-white hover:bg-[#252525]
+            w-7 h-12 flex items-center justify-center rounded-r-lg
+            text-gray-400 hover:text-white
             shadow-md transition-all duration-150 z-10"
+          style={{
+            backgroundColor: "var(--sb-bg2)",
+            border: "1px solid var(--sb-border)",
+          }}
         >
           {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
         </button>
@@ -196,7 +213,7 @@ export default function Sidebar() {
       <button
         onClick={() => setDrawerOpen(true)}
         className="md:hidden fixed top-3.5 left-3 z-50 w-9 h-9 flex items-center justify-center
-    rounded-xl text-gray-300 hover:text-white hover:bg-white/10 transition"
+          rounded-xl text-gray-300 hover:text-white hover:bg-white/10 transition"
       >
         <Menu size={20} />
       </button>
@@ -211,14 +228,22 @@ export default function Sidebar() {
 
       {/* ===== MOBILE DRAWER ===== */}
       <aside
-        className={`md:hidden fixed top-0 left-0 z-50 h-full w-64 bg-[#111] text-gray-200
-          flex flex-col border-r border-white/10
+        className={`md:hidden fixed top-0 left-0 z-50 h-full w-64 text-gray-200
+          flex flex-col
           transition-transform duration-300 ease-in-out
           ${drawerOpen ? "translate-x-0" : "-translate-x-full"}
         `}
+        style={{
+          ...accentVars,
+          backgroundColor: "var(--sb-bg1)",
+          borderRight: "1px solid var(--sb-border)",
+        }}
       >
         {/* Drawer Header */}
-        <div className="p-4 flex items-center justify-between border-b border-white/10">
+        <div
+          className="p-4 flex items-center justify-between"
+          style={{ borderBottom: "1px solid var(--sb-border)" }}
+        >
           <div className="flex items-center gap-2 text-base font-bold">
             <img
               src="/img/pompom-icon.ico"
@@ -239,7 +264,7 @@ export default function Sidebar() {
         <nav className="flex-1 px-2 py-2 text-sm overflow-y-auto">
           {allItems.map((item, i) => (
             <div key={i}>
-              {item.dividerBefore && <Divider />}
+              {item.dividerBefore && <Divider accent={accent} />}
               <MenuItem
                 icon={<item.icon size={18} />}
                 label={item.label}
@@ -253,6 +278,7 @@ export default function Sidebar() {
                   setDrawerOpen(false);
                 }}
                 onClick={() => setDrawerOpen(false)}
+                accent={accent}
               />
             </div>
           ))}
@@ -263,7 +289,6 @@ export default function Sidebar() {
 }
 
 /* ====== Helper Components ====== */
-
 function MenuItem({
   icon,
   label,
@@ -275,24 +300,31 @@ function MenuItem({
   onWip,
   onClick,
   collapsed = false,
+  accent,
 }) {
-  // Collapsed mode: icon only + hover tooltip label
+  const activeStyle = active
+    ? { backgroundColor: `${accent.glow}22`, color: "#fff" }
+    : {};
+
   if (collapsed) {
     const baseClass = `relative group w-full flex items-center justify-center px-0 py-2.5 rounded-md cursor-pointer
       transition-colors duration-150
-      ${active ? "bg-white/10 text-white" : "hover:bg-white/5 text-gray-400 hover:text-white"}
+      ${active ? "text-white" : "hover:bg-white/5 text-gray-400 hover:text-white"}
       ${wip ? "opacity-60" : ""}
     `;
 
     const tooltip = (
       <span
         className="absolute left-full ml-3 top-1/2 -translate-y-1/2
-          bg-[#222] text-white text-xs font-medium px-3 py-1.5 rounded-md shadow-lg
+          text-white text-xs font-medium px-3 py-1.5 rounded-md shadow-lg
           whitespace-nowrap pointer-events-none z-50
           opacity-0 group-hover:opacity-100
           translate-x-1 group-hover:translate-x-0
-          transition-all duration-200 ease-out
-          border border-white/10"
+          transition-all duration-200 ease-out"
+        style={{
+          backgroundColor: accent.bg2,
+          border: `1px solid ${accent.border}`,
+        }}
       >
         {label}
         {wip && (
@@ -303,7 +335,7 @@ function MenuItem({
 
     if (wip) {
       return (
-        <button onClick={onWip} className={baseClass}>
+        <button onClick={onWip} className={baseClass} style={activeStyle}>
           <span>{icon}</span>
           {tooltip}
         </button>
@@ -311,14 +343,19 @@ function MenuItem({
     }
 
     return (
-      <Link href={href} onClick={onClick} className={baseClass}>
+      <Link
+        href={href}
+        onClick={onClick}
+        className={baseClass}
+        style={activeStyle}
+      >
         <span>{icon}</span>
         {tooltip}
       </Link>
     );
   }
 
-  // Expanded mode: original behavior
+  // Expanded mode
   if (wip) {
     return (
       <button
@@ -347,9 +384,8 @@ function MenuItem({
     <Link
       href={href}
       onClick={onClick}
-      className={`flex items-center justify-between px-3 py-2 rounded-md cursor-pointer
-        ${active ? "bg-white/10 text-white" : "hover:bg-white/5"}
-      `}
+      className="flex items-center justify-between px-3 py-2 rounded-md cursor-pointer hover:bg-white/5"
+      style={activeStyle}
     >
       <div className="flex items-center gap-3">
         <span className="text-gray-400">{icon}</span>
@@ -366,6 +402,11 @@ function MenuItem({
   );
 }
 
-function Divider({ collapsed = false }) {
-  return <div className={`my-3 h-px bg-white/10 ${collapsed ? "mx-2" : ""}`} />;
+function Divider({ collapsed = false, accent }) {
+  return (
+    <div
+      className={`my-3 h-px ${collapsed ? "mx-2" : ""}`}
+      style={{ backgroundColor: accent?.border ?? "rgba(255,255,255,0.1)" }}
+    />
+  );
 }

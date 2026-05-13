@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { Send } from "lucide-react";
 import { bots } from "@/app/constants/botList";
-import Link from "next/link";
+import { useAccent } from "@/app/context/accentContext";
 import { getAccent } from "@/app/constants/accentColors";
 import "../style.css";
 
@@ -59,6 +59,8 @@ export default function ChatPage() {
   const bot = bots.find((b) => b.id === id);
   const accent = getAccent(bot?.color);
 
+  const { setAccentKey } = useAccent();
+
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
@@ -68,6 +70,12 @@ export default function ChatPage() {
 
   const chatEndRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Set accent saat masuk halaman, reset saat keluar
+  useEffect(() => {
+    if (bot?.color) setAccentKey(bot.color);
+    return () => setAccentKey("purple"); // reset ke default
+  }, [bot?.color]);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });

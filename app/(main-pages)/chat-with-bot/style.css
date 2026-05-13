@@ -49,7 +49,7 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 100%;
+  height: 100dvh;        /* dynamic viewport — otomatis handle browser bar mobile */
   min-height: 0;
   background-color: var(--cx-bg1);
   font-family: 'Rajdhani', sans-serif;

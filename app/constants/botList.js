@@ -8,7 +8,6 @@ export const bots = [
     color: "purple",
     greeting: "Herta sibuk, apa yang kau inginkan?",
   },
-
   // {
   //   id: "himeko",
   //   name: "Himeko",

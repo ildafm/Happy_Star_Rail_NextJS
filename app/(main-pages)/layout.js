@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "@/app/globals.css";
 
 import Sidebar from "../components/features/navigation/Sidebar";
+import { AccentProvider } from "../context/accentContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,11 +26,17 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <main className="flex h-screen overflow-hidden">
-          {/* Sidebar kiri */}
+        {/* <main className="flex h-screen overflow-hidden">
           <Sidebar />
           {children}
-        </main>
+        </main> */}
+
+        <AccentProvider>
+          <div style={{ display: "flex" }}>
+            <Sidebar />
+            <main style={{ flex: 1 }}>{children}</main>
+          </div>
+        </AccentProvider>
       </body>
     </html>
   );
