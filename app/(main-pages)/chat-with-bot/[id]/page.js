@@ -7,6 +7,7 @@ import { bots } from "@/app/constants/botList";
 import { useAccent } from "@/app/context/accentContext";
 import { getAccent } from "@/app/constants/accentColors";
 import "../style.css";
+import { BOT_CONFIGS } from "@/app/libs/botConfigs";
 
 // Ambil 2 huruf kapital dari nama bot, misal "Himeko" → "HI"
 function getInitials(name = "") {
@@ -65,7 +66,10 @@ export default function ChatPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
   const [messages, setMessages] = useState([
-    { role: "bot", text: bot?.greeting ?? `Halo, aku ${bot?.name}.` },
+    {
+      role: "bot",
+      text: BOT_CONFIGS[id]?.greetingMessage ?? `Halo, aku ${bot?.name}.`,
+    },
   ]);
 
   const chatEndRef = useRef(null);

@@ -22,19 +22,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
       >
-        {/* <main className="flex h-screen overflow-hidden">
-          <Sidebar />
-          {children}
-        </main> */}
-
         <AccentProvider>
-          <div style={{ display: "flex" }}>
+          <div className="flex h-full min-h-screen">
             <Sidebar />
-            <main style={{ flex: 1 }}>{children}</main>
+            <main className="flex-1 overflow-auto">{children}</main>
           </div>
         </AccentProvider>
       </body>

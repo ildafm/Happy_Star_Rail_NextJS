@@ -4,8 +4,8 @@
 // Tambah bot baru cukup di sini. Route tidak perlu diubah.
 // ─────────────────────────────────────────────────────────────
 
-import { HERTA_SYSTEM_PROMPT } from "./botPrompts";
-import { getMadamHertaProfile } from "./botContexts";
+import { HERTA_SYSTEM_PROMPT, HIMEKO_SYSTEM_PROMPT } from "./botPrompts";
+import { getHertaBotContext, getHimekoBotContext } from "./botContexts";
 
 export const BOT_CONFIGS = {
   // ── Herta ──────────────────────────────────────────────────
@@ -42,7 +42,10 @@ export const BOT_CONFIGS = {
     ],
 
     // Fungsi untuk mengambil context tambahan (null = tidak perlu)
-    getContext: getMadamHertaProfile,
+    getContext: getHertaBotContext,
+
+    // Salam custom dari bot
+    greetingMessage: "Herta sibuk, apa yang kau inginkan?",
 
     // Pesan error custom bot ini
     errorMessage: "Terjadi kesalahan sistem. Herta tidak peduli.",
@@ -50,11 +53,37 @@ export const BOT_CONFIGS = {
 
   // ── Himeko ─────────────────────────────────────────────────
   himeko: {
-    systemPrompt: HERTA_SYSTEM_PROMPT,
+    systemPrompt: HIMEKO_SYSTEM_PROMPT,
 
-    keywords: [], // kosong = tidak ada keyword fetch
+    keywords: [
+      "himeko",
+      "navigator",
+      "astral express",
+      "kereta",
+      "express",
+      "kopi",
+      "coffee",
+      "pom-pom",
+      "welt",
+      "dan heng",
+      "march",
+      "trailblazer",
+      "fire",
+      "api",
+      "mekanik",
+      "bintang",
+      "kosmos",
+      "perjalanan",
+      "akivili",
+      "nameless",
+      "stellaron",
+      "lore",
+      "profil",
+    ],
 
-    getContext: null, // tidak ada data tambahan
+    getContext: getHimekoBotContext,
+
+    greetingMessage: "Sangat jarang melihatmu santai, mau kopi?",
 
     errorMessage:
       "Maaf, sepertinya koneksi Astral Express terputus. Coba lagi ya!",

@@ -6,16 +6,16 @@ export const bots = [
     affil: "Herta Station Space",
     image: "/img/herta-profile.jpg",
     color: "purple",
-    greeting: "Herta sibuk, apa yang kau inginkan?",
   },
-  // {
-  //   id: "himeko",
-  //   name: "Himeko",
-  //   title: "Trailblazer",
-  //   affil: "Astral Express",
-  //   image: "/img/himeko-profile.jpg",
-  //   color: "red",
-  // },
+  {
+    id: "himeko",
+    name: "Himeko",
+    title: "Trailblazer",
+    affil: "Astral Express",
+    image:
+      "https://i.pinimg.com/474x/1f/10/70/1f10702fa38a0277b484973045f695a1.jpg",
+    color: "red",
+  },
   // {
   //   id: "march-7th",
   //   name: "March 7th",

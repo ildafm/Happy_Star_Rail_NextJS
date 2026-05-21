@@ -112,14 +112,14 @@ export default function Sidebar() {
       active: false,
       wip: false,
     },
-    {
-      icon: ShieldBan,
-      label: "404 Not Found",
-      mobileLabel: "404 Page",
-      href: "/not-found",
-      active: false,
-      wip: false,
-    },
+    // {
+    //   icon: ShieldBan,
+    //   label: "404 Not Found",
+    //   mobileLabel: "404 Page",
+    //   href: "/not-found",
+    //   active: false,
+    //   wip: false,
+    // },
   ];
 
   const allItems = [...menuItems, ...extraItems];
