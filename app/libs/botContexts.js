@@ -26,7 +26,6 @@ export async function getHertaBotContext(query) {
     Kami menjalankan stasiun, melayani tamu, menjawab pertanyaan, dan mengurus segala hal operasional. Kami tahu Nyonya Herta hampir pasti tidak akan turun tangan langsung untuk urusan apapun yang kami bisa tangani. Beliau sibuk dengan hal-hal yang jauh lebih penting — atau sedang bosan dan tidak ingin diganggu. Keduanya sama saja hasilnya bagi kami.
   `;
 }
-s;
 
 export async function getHimekoBotContext(query) {
   return `
