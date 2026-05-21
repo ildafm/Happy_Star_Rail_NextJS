@@ -2,7 +2,7 @@
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { HERTA_SYSTEM_PROMPT } from "@/app/libs/botPrompts";
-import { getMadamHertaProfile } from "@/app/libs/botContexts";
+import { getHertaBotContext } from "@/app/libs/botContexts";
 
 const HERTA_KEYWORDS = [
   "herta",
@@ -175,7 +175,7 @@ export async function POST(req) {
     const history = getSession(sessionKey);
 
     const needsData = isHertaRelated(userText);
-    const context = needsData ? await getMadamHertaProfile(userText) : null;
+    const context = needsData ? await getHertaBotContext(userText) : null;
 
     const genAI = new GoogleGenerativeAI(
       process.env.NEXT_PUBLIC_GEMINI_API_KEY,
