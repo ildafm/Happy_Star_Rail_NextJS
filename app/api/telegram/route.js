@@ -1,40 +1,14 @@
-// telegram
+// api for bot herta on telegram
 
+import { BOT_CONFIGS } from "@/app/libs/botConfigs";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { HERTA_SYSTEM_PROMPT } from "@/app/libs/botPrompts";
-import { getHertaBotContext } from "@/app/libs/botContexts";
 
-const HERTA_KEYWORDS = [
-  "herta",
-  "madam",
-  "nyonya",
-  "stasiun",
-  "space station",
-  "genius society",
-  "simulated universe",
-  "boneka",
-  "doll",
-  "erudition",
-  "nous",
-  "emanator",
-  "kuru",
-  "asta",
-  "ruan mei",
-  "screwllum",
-  "kemampuan",
-  "skill",
-  "ability",
-  "element",
-  "elemen",
-  "path",
-  "lore",
-  "profil",
-  "karakter",
-];
+const config = BOT_CONFIGS.herta;
 
-function isHertaRelated(message) {
+function hasKeyword(message, keywords) {
+  if (!keywords || keywords.length === 0) return false;
   const lower = message.toLowerCase();
-  return HERTA_KEYWORDS.some((keyword) => lower.includes(keyword));
+  return keywords.some((kw) => lower.includes(kw));
 }
 
 async function sendTelegram(chatId, text) {
@@ -130,7 +104,6 @@ export async function POST(req) {
 
     // ===== HANDLE COMMANDS =====
     if (userText.startsWith("/")) {
-      // Di group, hanya respon command yang mention bot atau command eksplisit
       const responses = {
         "/start":
           "Unit Herta aktif.\n\nAturan:\n— Jangan buang waktu Herta dengan pertanyaan bodoh\n— Herta akan menjawab jika dianggap layak\n— Jangan berharap Herta bersikap ramah\n\nSekarang, ada apa?",
@@ -161,12 +134,11 @@ export async function POST(req) {
 
     // ===== DI GROUP: hanya respon jika di-mention atau reply ke bot =====
     if (isGroup) {
-      const botUsername = process.env.TELEGRAM_BOT_USERNAME; // ← tambah env ini
+      const botUsername = process.env.TELEGRAM_BOT_USERNAME;
       const isMentioned = botUsername && userText.includes(`@${botUsername}`);
       const isReplyToBot = message.reply_to_message?.from?.is_bot === true;
 
       if (!isMentioned && !isReplyToBot) {
-        // Tidak di-mention dan bukan reply ke bot → abaikan
         return new Response("OK", { status: 200 });
       }
     }
@@ -174,13 +146,16 @@ export async function POST(req) {
     // ===== PROSES KE GEMINI =====
     const history = getSession(sessionKey);
 
-    const needsData = isHertaRelated(userText);
-    const context = needsData ? await getHertaBotContext(userText) : null;
+    const needsContext = hasKeyword(userText, config.keywords);
+    const context =
+      needsContext && config.getContext
+        ? await config.getContext(userText)
+        : null;
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({
       model: process.env.GEMINI_VERSION,
-      systemInstruction: HERTA_SYSTEM_PROMPT,
+      systemInstruction: config.systemPrompt,
     });
 
     const geminiHistory = history
@@ -213,10 +188,7 @@ export async function POST(req) {
     console.error("Telegram webhook error:", err.message);
     if (chatId) {
       try {
-        await sendTelegram(
-          chatId,
-          "Terjadi kesalahan sistem, Herta tidak peduli.",
-        );
+        await sendTelegram(chatId, config.errorMessage);
       } catch (telegramErr) {
         console.error("Gagal mengirim pesan error:", telegramErr.message);
       }
