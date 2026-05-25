@@ -83,7 +83,7 @@ export const BOT_CONFIGS = {
 
     getContext: getHimekoBotContext,
 
-    greetingMessage: "Sangat jarang melihatmu santai, mau kopi?",
+    greetingMessage: "Sangat jarang melihatmu santai, ada apa?",
 
     errorMessage:
       "Maaf, sepertinya koneksi Astral Express terputus. Coba lagi ya!",
@@ -91,7 +91,7 @@ export const BOT_CONFIGS = {
 
   // ── March 7th ──────────────────────────────────────────────
   "march-7th": {
-    systemPrompt: HERTA_SYSTEM_PROMPT,
+    systemPrompt: null,
 
     keywords: [],
     getContext: null,
@@ -102,7 +102,7 @@ export const BOT_CONFIGS = {
 
   // ── Welt ───────────────────────────────────────────────────
   welt: {
-    systemPrompt: HERTA_SYSTEM_PROMPT,
+    systemPrompt: null,
 
     keywords: [],
     getContext: null,
@@ -112,7 +112,7 @@ export const BOT_CONFIGS = {
 
   // ── Dan Heng ───────────────────────────────────────────────
   "dan-heng": {
-    systemPrompt: HERTA_SYSTEM_PROMPT,
+    systemPrompt: null,
 
     keywords: [],
     getContext: null,
@@ -122,7 +122,7 @@ export const BOT_CONFIGS = {
 
   // ── Pom-Pom ────────────────────────────────────────────────
   "pom-pom": {
-    systemPrompt: HERTA_SYSTEM_PROMPT,
+    systemPrompt: null,
 
     keywords: [],
     getContext: null,
@@ -132,7 +132,7 @@ export const BOT_CONFIGS = {
 
   // ── Kafka ──────────────────────────────────────────────────
   kafka: {
-    systemPrompt: HERTA_SYSTEM_PROMPT,
+    systemPrompt: null,
 
     keywords: [],
     getContext: null,

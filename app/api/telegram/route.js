@@ -38,7 +38,7 @@ function isHertaRelated(message) {
 }
 
 async function sendTelegram(chatId, text) {
-  const token = process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN;
+  const token = process.env.TELEGRAM_BOT_TOKEN;
   await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -177,11 +177,9 @@ export async function POST(req) {
     const needsData = isHertaRelated(userText);
     const context = needsData ? await getHertaBotContext(userText) : null;
 
-    const genAI = new GoogleGenerativeAI(
-      process.env.NEXT_PUBLIC_GEMINI_API_KEY,
-    );
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({
-      model: process.env.NEXT_PUBLIC_GEMINI_VERSION,
+      model: process.env.GEMINI_VERSION,
       systemInstruction: HERTA_SYSTEM_PROMPT,
     });
 

@@ -25,11 +25,9 @@ export async function POST(req) {
         : null;
 
     // Init Gemini
-    const genAI = new GoogleGenerativeAI(
-      process.env.NEXT_PUBLIC_GEMINI_API_KEY,
-    );
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({
-      model: process.env.NEXT_PUBLIC_GEMINI_VERSION,
+      model: process.env.GEMINI_VERSION,
       systemInstruction: config.systemPrompt,
     });
 
