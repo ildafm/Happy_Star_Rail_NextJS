@@ -49,7 +49,7 @@ export const BOT_CONFIGS = {
 
     // Pesan error custom bot ini
     errorMessage:
-      "Herta sibuk sekarang, bicara lagi nanti \n\n **[Pesan Otomatis]**.",
+      "Herta sibuk sekarang, bicara lagi nanti. \n\n<b><i>Pesan Otomatis</i></b>.",
   },
 
   // ── Himeko ─────────────────────────────────────────────────
@@ -87,7 +87,7 @@ export const BOT_CONFIGS = {
     greetingMessage: "Sangat jarang melihatmu santai, ada apa?",
 
     errorMessage:
-      "Maaf, sepertinya koneksi Astral Express terputus. Coba lagi ya!",
+      "Maaf, sepertinya koneksi Astral Express terputus. Coba lagi nanti ya!",
   },
 
   // ── March 7th ──────────────────────────────────────────────

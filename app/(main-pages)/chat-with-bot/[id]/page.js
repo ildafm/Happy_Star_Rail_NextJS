@@ -230,14 +230,20 @@ export default function ChatPage() {
                   />
                 </div>
               )}
-              <div
-                className={`cx__bubble ${msg.role === "user" ? "cx__bubble--user" : "cx__bubble--bot"}`}
-              >
-                {msg.text}
-                {msg.role === "bot" &&
-                  i === messages.length - 1 &&
-                  isStreaming && <span className="cx__cursor" />}
-              </div>
+
+              {msg.role === "bot" ? (
+                <>
+                  <div
+                    className="cx__bubble cx__bubble--bot"
+                    dangerouslySetInnerHTML={{ __html: msg.text }}
+                  />
+                  {i === messages.length - 1 && isStreaming && (
+                    <span className="cx__cursor" />
+                  )}
+                </>
+              ) : (
+                <div className="cx__bubble cx__bubble--user">{msg.text}</div>
+              )}
             </div>
           ))}
 
@@ -258,6 +264,7 @@ export default function ChatPage() {
               </div>
             </div>
           )}
+
           <div ref={chatEndRef} />
         </div>
 
