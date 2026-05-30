@@ -14,9 +14,9 @@ export const BOT_CONFIGS = {
 
     // Kata kunci yang memicu fetch data tambahan (opsional)
     keywords: [
-      "herta",
-      "madam",
-      "nyonya",
+      "madam herta",
+      "nyonya herta",
+      "the herta",
       "stasiun",
       "space station",
       "genius society",
@@ -48,7 +48,8 @@ export const BOT_CONFIGS = {
     greetingMessage: "Herta sibuk, apa yang kau inginkan?",
 
     // Pesan error custom bot ini
-    errorMessage: "Terjadi kesalahan sistem. Herta tidak peduli.",
+    errorMessage:
+      "Herta sibuk sekarang, bicara lagi nanti \n\n **[Pesan Otomatis]**.",
   },
 
   // ── Himeko ─────────────────────────────────────────────────
