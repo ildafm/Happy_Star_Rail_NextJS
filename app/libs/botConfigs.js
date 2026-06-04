@@ -4,7 +4,11 @@
 // Tambah bot baru cukup di sini. Route tidak perlu diubah.
 // ─────────────────────────────────────────────────────────────
 
-import { HERTA_SYSTEM_PROMPT, HIMEKO_SYSTEM_PROMPT } from "./botPrompts";
+import {
+  HERTA_SYSTEM_PROMPT,
+  HIMEKO_SYSTEM_PROMPT,
+  WIP_SYSTEM_PROMPT,
+} from "./botPrompts";
 import { getHertaBotContext, getHimekoBotContext } from "./botContexts";
 
 export const BOT_CONFIGS = {
@@ -91,55 +95,67 @@ export const BOT_CONFIGS = {
   },
 
   // ── March 7th ──────────────────────────────────────────────
-  "march-7th": {
-    systemPrompt: null,
+  castorice: {
+    systemPrompt: WIP_SYSTEM_PROMPT,
 
     keywords: [],
     getContext: null,
 
-    errorMessage:
-      "Eh?! Ada yang salah! Tunggu aku foto dulu baru kubereskan! 📸",
+    greetingMessage: null,
+
+    errorMessage: "Terjadi kesalahan sistem, kembali lagi nanti.",
   },
 
-  // ── Welt ───────────────────────────────────────────────────
-  welt: {
-    systemPrompt: null,
+  // // ── March 7th ──────────────────────────────────────────────
+  // march7th: {
+  //   systemPrompt: null,
 
-    keywords: [],
-    getContext: null,
+  //   keywords: [],
+  //   getContext: null,
 
-    errorMessage: "Hmm, tampaknya ada gangguan. Beri aku waktu sebentar.",
-  },
+  //   errorMessage:
+  //     "Eh?! Ada yang salah! Tunggu aku foto dulu baru kubereskan! 📸",
+  // },
 
-  // ── Dan Heng ───────────────────────────────────────────────
-  "dan-heng": {
-    systemPrompt: null,
+  // // ── Welt ───────────────────────────────────────────────────
+  // welt: {
+  //   systemPrompt: null,
 
-    keywords: [],
-    getContext: null,
+  //   keywords: [],
+  //   getContext: null,
 
-    errorMessage: "Terjadi kesalahan. Aku akan periksa.",
-  },
+  //   errorMessage: "Hmm, tampaknya ada gangguan. Beri aku waktu sebentar.",
+  // },
 
-  // ── Pom-Pom ────────────────────────────────────────────────
-  "pom-pom": {
-    systemPrompt: null,
+  // // ── Dan Heng ───────────────────────────────────────────────
+  // "dan-heng": {
+  //   systemPrompt: null,
 
-    keywords: [],
-    getContext: null,
+  //   keywords: [],
+  //   getContext: null,
 
-    errorMessage: "Kyaa! Ada yang rusak! Pom-Pom minta maaf!",
-  },
+  //   errorMessage: "Terjadi kesalahan. Aku akan periksa.",
+  // },
 
-  // ── Kafka ──────────────────────────────────────────────────
-  kafka: {
-    systemPrompt: null,
+  // // ── Pom-Pom ────────────────────────────────────────────────
+  // "pom-pom": {
+  //   systemPrompt: null,
 
-    keywords: [],
-    getContext: null,
+  //   keywords: [],
+  //   getContext: null,
 
-    errorMessage: "Sepertinya ada yang menghalangi komunikasi kita. Menarik.",
-  },
+  //   errorMessage: "Kyaa! Ada yang rusak! Pom-Pom minta maaf!",
+  // },
+
+  // // ── Kafka ──────────────────────────────────────────────────
+  // kafka: {
+  //   systemPrompt: null,
+
+  //   keywords: [],
+  //   getContext: null,
+
+  //   errorMessage: "Sepertinya ada yang menghalangi komunikasi kita. Menarik.",
+  // },
 };
 
 // Fallback kalau botId tidak ditemukan

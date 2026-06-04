@@ -16,8 +16,17 @@ export const bots = [
       "https://i.pinimg.com/474x/1f/10/70/1f10702fa38a0277b484973045f695a1.jpg",
     color: "red",
   },
+  {
+    id: "castorice",
+    name: "Castorice (WIP)",
+    title: "Servant of Death",
+    affil: "Amphoreus",
+    image:
+      "https://i.pinimg.com/736x/3f/50/6f/3f506f1b1eb6011f28cc2aa7fd31a0db.jpg",
+    color: "pink",
+  },
   // {
-  //   id: "march-7th",
+  //   id: "march7th",
   //   name: "March 7th",
   //   title: "Trailblazer",
   //   affil: "Astral Express",
