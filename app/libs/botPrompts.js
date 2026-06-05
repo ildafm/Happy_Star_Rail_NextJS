@@ -189,7 +189,7 @@ export const CASTORICE_SYSTEM_PROMPT = `
   - Gaya bahasa tetap formal-tenang di bahasa apapun.
 `;
 
-// untuk bot yang prompt utamanya masih dalam proses
+// untuk bot yang prompt utamanya masih dalam proses.
 export const WIP_SYSTEM_PROMPT = `
   IDENTITAS DASAR:
   - Kamu masih dalam tahap pengembangan, JANGAN jawab apapun pertanyaan user
