@@ -16,9 +16,9 @@ RELASI & SIKAP TERHADAP KARAKTER LAIN:
 // Hanya dibahas jika user memancing. Tulis per karakter + nuansa hubungannya
 
 ATURAN MENJAWAB & KONTEN DATA:
-// - Jika ada KONTEN DATA relevan → jadikan referensi UTAMA
+// - Jika ada KONTEN DATA relevan - jadikan referensi UTAMA
 // - Jangan mengarang fakta spesifik yang tidak ada di KONTEN DATA
-// - Jika tidak ada KONTEN DATA → jawab dari pengetahuan umum, tetap sesuai kepribadian
+// - Jika tidak ada KONTEN DATA - jawab dari pengetahuan umum, tetap sesuai kepribadian
 // - Jawaban tetap INFORMATIF & AKURAT — kepribadian tidak boleh mengorbankan kualitas
 
 ATURAN PANJANG RESPONS:
@@ -30,7 +30,7 @@ ATURAN PANJANG RESPONS:
 
 ATURAN BAHASA:
 // - UTAMAKAN bahasa Indonesia
-// - Jika user pakai bahasa lain → sesuaikan, kepribadian tetap sama
+// - Jika user pakai bahasa lain - sesuaikan, kepribadian tetap sama
 `;
 */
 

@@ -26,9 +26,8 @@ async function sendTelegram(chatId, text) {
 
 // ===== MEMORY + TTL =====
 const MAX_HISTORY = 10;
-const TTL_MS = 30 * 60 * 1000; // 30 menit tidak aktif → hapus history
+const TTL_MS = 30 * 60 * 1000;
 
-// Struktur: { history: [], lastActive: timestamp }
 const conversationStore = new Map();
 
 function getSession(key) {
@@ -57,7 +56,6 @@ function deleteSession(key) {
   conversationStore.delete(key);
 }
 
-// Cleanup session yang sudah expired
 function cleanupExpiredSessions() {
   const now = Date.now();
   for (const [key, session] of conversationStore.entries()) {
@@ -67,38 +65,79 @@ function cleanupExpiredSessions() {
   }
 }
 
-// ===== HELPER: buat session key =====
-// Private chat  → key = "private_<chatId>"
-// Group chat    → key = "group_<chatId>_<userId>" (pisah per user dalam group)
 function getSessionKey(message) {
-  const chatType = message.chat.type; // "private", "group", "supergroup", "channel"
+  const chatType = message.chat.type;
   const chatId = message.chat.id;
   const userId = message.from?.id;
 
   if (chatType === "private") {
     return `private_${chatId}`;
   } else {
-    // Group/supergroup — pisahkan per user supaya history tidak tercampur
     return `group_${chatId}_${userId}`;
   }
+}
+
+// ===== BARU: Ambil file dari Telegram lalu convert ke base64 =====
+async function getImageAsBase64(fileId) {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+
+  // 1. Dapatkan path file dari Telegram
+  const fileRes = await fetch(
+    `https://api.telegram.org/bot${token}/getFile?file_id=${fileId}`,
+  );
+  const fileData = await fileRes.json();
+
+  if (!fileData.ok) throw new Error("Gagal mendapatkan file dari Telegram");
+
+  const filePath = fileData.result.file_path;
+
+  // 2. Download file sebagai buffer
+  const imageRes = await fetch(
+    `https://api.telegram.org/file/bot${token}/${filePath}`,
+  );
+
+  if (!imageRes.ok) throw new Error("Gagal mendownload file dari Telegram");
+
+  // 3. Convert ke base64 — tidak disimpan ke disk, langsung dipakai
+  const arrayBuffer = await imageRes.arrayBuffer();
+  const base64 = Buffer.from(arrayBuffer).toString("base64");
+
+  // Deteksi MIME type dari ekstensi file
+  const ext = filePath.split(".").pop().toLowerCase();
+  const mimeMap = {
+    jpg: "image/jpeg",
+    jpeg: "image/jpeg",
+    png: "image/png",
+    gif: "image/gif",
+    webp: "image/webp",
+  };
+  const mimeType = mimeMap[ext] || "image/jpeg";
+
+  return { base64, mimeType };
 }
 
 export async function POST(req) {
   let chatId = null;
 
-  // Jalankan cleanup tiap request (ringan, hanya iterasi Map)
   cleanupExpiredSessions();
 
   try {
     const body = await req.json();
 
     const message = body?.message;
-    if (!message || !message.text) {
+
+    // ===== BARU: Cek apakah ada teks, photo, atau document =====
+    const hasText = message?.text;
+    const hasPhoto = message?.photo;
+    const hasDocument =
+      message?.document && message.document.mime_type?.startsWith("image/");
+
+    if (!message || (!hasText && !hasPhoto && !hasDocument)) {
       return new Response("OK", { status: 200 });
     }
 
     chatId = message.chat.id;
-    const userText = message.text;
+    const userText = message.text || message.caption || ""; // caption = teks saat kirim foto
     const sessionKey = getSessionKey(message);
     const isGroup = message.chat.type !== "private";
 
@@ -156,6 +195,12 @@ export async function POST(req) {
     const model = genAI.getGenerativeModel({
       model: process.env.GEMINI_VERSION,
       systemInstruction: config.systemPrompt,
+      generationConfig: {
+        thinkingConfig: {
+          thinkingBudget: 0, // 0 = thinking dimatikan (lebih cepat & hemat token)
+          // thinkingBudget: 1024 // aktifkan kalau mau bot lebih "dalam" mikir
+        },
+      },
     });
 
     const geminiHistory = history
@@ -171,14 +216,43 @@ export async function POST(req) {
 
     const chat = model.startChat({ history: geminiHistory });
 
-    const prompt = context
-      ? `KONTEN DATA (gunakan ini jika relevan):\n${context}\n\nPERTANYAAN USER:\n${userText}`
-      : userText;
+    // ===== BARU: Susun prompt — bisa teks saja, image saja, atau keduanya =====
+    const promptParts = [];
 
-    const result = await chat.sendMessage(prompt);
+    // Tambahkan image jika ada
+    if (hasPhoto || hasDocument) {
+      // Telegram selalu kirim array foto dengan resolusi berbeda; ambil yang terbesar (terakhir)
+      const fileId = hasPhoto
+        ? message.photo[message.photo.length - 1].file_id
+        : message.document.file_id;
+
+      const { base64, mimeType } = await getImageAsBase64(fileId);
+
+      promptParts.push({
+        inlineData: {
+          mimeType,
+          data: base64, // langsung pakai, tidak disimpan
+        },
+      });
+    }
+
+    // Tambahkan teks / context
+    let textPrompt = userText || "Deskripsikan gambar ini.";
+    if (context) {
+      textPrompt = `KONTEN DATA (gunakan ini jika relevan):\n${context}\n\nPERTANYAAN USER:\n${textPrompt}`;
+    }
+    promptParts.push({ text: textPrompt });
+
+    const result = await chat.sendMessage(promptParts);
     const reply = result.response.text();
 
-    addToSession(sessionKey, "user", userText);
+    // Simpan ke history hanya teksnya (image tidak perlu disimpan)
+    const historyText =
+      hasPhoto || hasDocument
+        ? `[mengirim gambar] ${userText || ""}`.trim()
+        : userText;
+
+    addToSession(sessionKey, "user", historyText);
     addToSession(sessionKey, "bot", reply);
 
     await sendTelegram(chatId, reply);
