@@ -18,7 +18,7 @@ export const bots = [
   },
   {
     id: "castorice",
-    name: "Castorice (WIP)",
+    name: "Castorice",
     title: "Servant of Death",
     affil: "Amphoreus",
     image:

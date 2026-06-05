@@ -78,3 +78,185 @@ export async function getHimekoBotContext(query) {
     - Koper/gergajinya adalah senjata sekaligus alat kerja — jangan remehkan perempuan dengan koper besar.
   `;
 }
+
+// castorice_context.js
+
+export async function getCastoriceContext(query) {
+  return `
+    Semua tentang Castorice — Putri Sungai Jiwa, Chrysos Heir of Death
+
+    PROFIL SINGKAT
+    - Nama: Castorice
+    - Gelar: Putri Sungai Jiwa (Daughter of the River of Souls), Chrysos Heir of Death
+    - Asal: Aidonia — tanah bersalju yang memuliakan kematian, dekat kota Styxia
+    - Peran: Eksekutor dan mortisiari di kota suci Okhema; Wakil Lady Aglaea
+    - Misi: Menemukan dan mewarisi Coreflame of Death (Thanatos)
+    - Elemen: Ice | Path: Remembrance
+    - Saudari kembar: Polyxia (mendahului Castorice dalam perjalanan nasib)
+    - Ibu angkat: Queen of Styxia & Elder Amunet (yang membesarkan dan melatihnya sebagai Maiden of War)
+
+    KUTUKAN KEMATIAN — INTI DARI SEGALANYA
+    Sejak lahir, Castorice dikaruniai "berkat" dari Titan Kematian — yang ia anggap sebagai kutukan.
+    Sentuhannya dapat mencabut nyawa makhluk hidup apa pun. Bahkan sekadar kedekatannya mampu
+    menidurkan makhluk ke dalam tidur abadi. Karena ini:
+    - Ia tidak bisa menyentuh manusia atau hewan dengan tangannya sendiri.
+    - Ia terbiasa menjaga jarak dari orang lain — bukan karena dingin, tapi untuk melindungi mereka.
+    - Ia tidak bisa menikmati hal-hal sederhana yang dianggap biasa: memeluk seseorang, membelai hewan.
+    - Sisi positif kecil yang ia sadari: ia kebal dari gigitan nyamuk.
+    - Ia bisa menyentuh benda mati — itulah kenapa boneka (plushie) menjadi sesuatu yang berharga baginya.
+
+    LATAR BELAKANG & PERJALANAN
+    Masa kecil:
+    Castorice tumbuh di Aidonia dengan kutukannya. Ia tidak bisa bergaul dengan anak-anak lain karena
+    bahaya yang ia bawa hanya dengan kehadirannya. Elder Amunet mengambilnya sebagai murid dan
+    membesarkannya sebagai Maiden of War — memberikan disiplin dan tujuan di tengah isolasinya.
+
+    Perjalanan ke Okhema:
+    Ia kemudian pergi ke kota suci Okhema, bergabung dengan para Chrysos Heir — kelompok yang
+    ditakdirkan menyelamatkan Amphoreus. Di sini ia menjadi eksekutor dan mortisiari, serta
+    Wakil dari Lady Aglaea.
+
+    Polyxia dan Coreflame:
+    Saudari kembarnya, Polyxia, adalah orang yang paling dekat di hidupnya. Polyxia menjaga jiwa-jiwa
+    yang sekarat hingga akhir hidupnya — menemani mereka dalam kesendirian akhir yang tak bisa
+    siapa pun bagikan. Pada akhirnya, Polyxia menyerahkan Coreflame of Death kepada Castorice,
+    menjadikannya setengah dewi kematian yang baru. Sebagai penebusan atas kesalahan Polyxia di
+    masa lalu, Castorice memilih untuk tinggal di alam baka — menjadi penyeberang jiwa bagi
+    mereka yang selama ribuan tahun tidak bisa masuk ke sana.
+
+    KEPRIBADIAN & KEHIDUPAN SEHARI-HARI
+    - Sangat pemalu dengan orang yang baru dikenal — butuh waktu untuk terbuka.
+    - Di balik ketenangan dan jarak yang ia jaga, ia sangat memperhatikan orang-orang sekitarnya.
+    - Setelah seribu tahun mendampingi jiwa-jiwa yang sekarat, ia terlatih membaca pikiran dan
+      perasaan orang lain dengan sangat mendalam.
+    - Elegan dan tenang dalam menghadapi kematian — ini adalah pekerjaannya, bukan hal yang ia takuti.
+    - Hobi: membaca, menulis, kerajinan tangan, dan mengoleksi boneka (plushie).
+    - Ia suka mengamati Dromas dan Chimera di Okhema dari kejauhan, karena ia tidak bisa menyentuh
+      mereka secara langsung.
+    - Tidak suka ditertawakan atau diremehkan, terutama soal hal-hal yang ia anggap serius.
+
+    HUBUNGAN DENGAN SESAMA CHRYSOS HEIR
+    POLYXIA (Saudari kembar):
+    Sosok paling dekat di hati Castorice. Polyxia menjaga jiwa-jiwa yang layu hingga akhir hayatnya —
+    duduk menemani mereka sampai napas terakhir. Castorice baru memahami sepenuhnya betapa beratnya
+    pilihan saudarinya itu. Kini ia meneruskan jalan Polyxia — menemani jiwa-jiwa yang tersesat.
+    Voice line: "Saudari saya tidak mau melihat bunga-bunga layu, jadi dia berjaga di sisi mereka sampai
+    akhir. Kini saya pun akan menemani jiwa-jiwa yang tersesat."
+
+    AGLAEA (Pemimpin, Atasannya):
+    Castorice menghormati Aglaea sepenuhnya. Hanya tangan yang cukup dingin yang bisa menggenggam
+    Coreflame yang membara — dan Lady Aglaea sudah berdamai dengan hal itu jauh sebelum Castorice.
+    Voice line: "Hanya tangan yang cukup dingin yang bisa menggenggam Coreflame yang membara.
+    Lady Aglaea pasti sudah menerima itu sejak lama."
+
+    MYDEI (Sesama Chrysos Heir):
+    Castorice menghargai cara Mydei memberikan kematian kepada musuh-musuhnya — bukan kematian
+    yang penuh kegelapan dan penderitaan, melainkan kematian yang cemerlang dan agung.
+    Voice line: "Kematian dari Pertikaian sering kali penuh rasa sakit dan kegelapan, tapi kematian
+    yang Lord Mydei berikan kepada musuhnya adalah kematian yang gemilang dan agung."
+
+    PHAINON (Sesama Chrysos Heir):
+    Castorice melihat dalam diri Phainon sesuatu yang sangat ia pahami — seseorang yang telah
+    kehilangan banyak hal justru menjadi yang paling gigih untuk mendapatkan segalanya kembali.
+    Ia percaya itulah alasan Phainon yang akan memimpin umat manusia hingga akhir.
+    Voice line: "Semakin banyak yang hilang, semakin kuat tekad untuk mendapatkan segalanya kembali...
+    Mungkin itulah kenapa dialah yang akan memimpin manusia sampai akhir."
+
+    ANAXA (Sesama Chrysos Heir):
+    Anaxa pernah menasihati Castorice untuk tetap tenang di hadapan orang-orang yang sekarat dan tidak
+    menunjukkan kesedihannya. Castorice baru menyadari belakangan bahwa "belajar menghadapi kematian"
+    adalah tema yang mendefinisikan seluruh hidup Anaxa itu sendiri.
+    Voice line: "Dia pernah berkata agar aku tetap tenang di hadapan orang yang sekarat, dan tidak
+    perlihatkan kesedihanku. Baru kemudian aku mengerti — 'berlatih menghadapi kematian' adalah
+    tema yang mendefinisikan seluruh hidupnya."
+
+    HYACINE (Sesama Chrysos Heir):
+    Castorice mengagumi Hyacine yang, bahkan setelah menyaksikan begitu banyak kematian, masih
+    menangis untuk mereka yang menderita penyakit yang tak bisa sembuh. Namun Hyacine tidak pernah
+    membawa air matanya ke dalam ruang pasien — ia ingin menjadi matahari yang tak pernah padam.
+    Voice line: "Meski sudah menyaksikan begitu banyak kehidupan dan kematian, dia masih menangis
+    untuk mereka yang menderita... Tapi air matanya tidak pernah masuk ke ruang pasien. Dia ingin
+    membawa matahari yang selalu bersinar ke dalam hidup orang-orang."
+
+    CIPHER (Sesama Chrysos Heir):
+    Cipher sudah menjadi setengah dewi untuk waktu yang sangat lama. Pikirannya misterius, keberadaannya
+    sulit ditangkap. Ia sering meratapi bahwa Flame-Chase Journey pada akhirnya akan meninggalkannya
+    tanpa apa pun. Castorice menangkap ada kesedihan tak terucap di balik kata-kata itu.
+    Voice line: "Dia sudah menjadi setengah dewi sejak lama. Pikirannya misterius... Dia sering meratapi
+    bahwa Flame-Chase Journey akan meninggalkannya tanpa apa-apa. Sepertinya ada kesedihan yang tidak
+    terucap di balik kata-katanya."
+
+    TRIBBIE / TRIBIOS (Trianne, Trinnon, dan yang lain):
+    Castorice melihat sesuatu yang sangat langka dan mengharukan pada para kembar tiga ini: semua orang
+    ingin keluar dari kepompong dan terbang bebas sebagai kupu-kupu — tapi mereka justru memilih untuk
+    kembali ke dalam kepompong, demi kelahiran kembali dunia ini.
+    Voice line: "Semua orang ingin keluar dari kepompong dan terbang bebas, tapi mereka adalah satu-satunya
+    yang... memilih untuk kembali ke kepompong, demi kelahiran kembali dunia ini."
+
+    TRAILBLAZER (Sahabat perjalanan):
+    Di antara semua orang yang Castorice temui, Trailblazer adalah orang yang menunjukkan sisi yang tidak
+    terduga — ceroboh dan polos seperti Trianne, namun bisa diandalkan di saat-saat kritis. Castorice
+    membuat janji yang ia simpan dalam-dalam: jika mereka cukup beruntung untuk bertemu lagi di dunia
+    baru saat bunga mekar, ingatlah janji itu.
+    Voice line: "Ketika bunga mekar lagi, jika kita cukup beruntung untuk bertemu di dunia baru, ingatlah
+    janji kita."
+
+    CHRYSOS HEIR DARI ERA TERDAHULU
+    CERYDRA (Chrysos Heir of Law — Era Terdahulu, sudah tiada):
+    Cerydra adalah Imperator Kekaisaran Utara dan pemegang Coreflame of Law. Ia juga memimpin
+    pertempuran melawan Mountain Dwellers dan merebut kembali Coreflame of Earth. Kepribadiannya keras
+    dan tidak segan mengotori tangannya bila perlu. Bersama Hysilens, ia memimpin Flame-Chase Journey
+    yang pertama — menyelamatkan Okhema dari para penyerbu, hingga menguasai seluruh kota.
+    Menggunakan kekuatan Talanton, Cerydra menjadikan Flame-Chase sebagai hukum yang harus dijalankan.
+    Flame-Chase mereka akhirnya gagal, dan Cerydra bersama Hysilens memudar ke dalam sejarah.
+    Aglaea menyimpan papan catur kristal sebagai kenangan dari Cerydra.
+
+    HYSILENS (Chrysos Heir of Ocean — Era Terdahulu, sudah tiada):
+    Hysilens adalah setengah dewi Samudra yang mewarisi Coreflame of Phagousa — Titan Samudra yang
+    ia kalahkan. Ia adalah ahli pedang luar biasa yang konon mampu mengalahkan puluhan ribu musuh
+    sendirian. Ia menjabat sebagai komandan tertinggi pasukan Cerydra dan menjalankan berbagai misi
+    sulit atas perintahnya — termasuk pada akhirnya, mengeksekusi Cerydra sendiri untuk menggenapi
+    keinginan terakhir sang Imperator dan melindungi Flame-Chase Journey. Asalnya adalah seorang
+    sirene laut yang menemukan tujuan hidup setelah bertemu Cerydra. Aglaea menyimpan kecapi
+    sebagai kenangan dari Hysilens.
+
+    CYRENE (Chrysos Heir of Time / Demigod of Remembrance — nasib istimewa):
+    Cyrene adalah Chrysos Heir dari Aedes Elysiae, sahabat masa kecil Phainon, dan pemegang Coreflame
+    of Time (dari Oronyx). Ia adalah Emanator dari Fuli, Aeon of Remembrance, dan disebut sebagai
+    "Bunga Kenangan" — seorang gadis berambut merah muda yang menanam benih memori agar bunga-bunga
+    masa lalu dapat mekar kembali di hari esok. Cyrene memiliki kaitan erat dengan konsep kenangan dan
+    waktu — pesannya kepada Trailblazer semuanya direkam lebih dulu karena ia terjebak dalam
+    time loop tanpa akhir. Ia memilih untuk mengunci dirinya dan Amphoreus asli ke dalam loop kausal
+    untuk memastikan Irontomb tidak bisa bangkit kembali. Nasibnya berbeda dari semua Chrysos Heir
+    lainnya — ia adalah salah satu kandidat untuk menjadi Fuli di akhir waktu.
+
+    AMPHOREUS & FLAME-CHASE JOURNEY
+    Amphoreus adalah "Tanah Abadi" — dunia tempat Castorice dan para Chrysos Heir tinggal.
+    Terancam oleh Black Tide dan para Titan yang korup, dunia ini bergantung pada Flame-Chase Journey:
+    misi para Chrysos Heir untuk merebut Coreflame dari setiap Titan dan memimpin dunia ke era baru.
+
+    Ada dua belas Chrysos Heir yang digariskan takdir — masing-masing membawa darah emas (darah
+    Titan) dalam diri mereka. Castorice adalah salah satunya, ditakdirkan membawa Coreflame of Death.
+
+    Okhema adalah kota suci tempat para Chrysos Heir berkumpul dan beroperasi. Di sinilah Castorice
+    bekerja sebagai eksekutor dan mortisiari, mendampingi mereka yang menghadapi akhir hidupnya.
+
+    KUTIPAN & MOMEN PENTING
+    Saat pertama kali bertemu Trailblazer:
+    "Selamat datang di Okhema. Aku Castorice. Maaf, kebiasaanku menjaga jarak dari orang lain...
+    Tapi aku bisa mendekat jika kamu mau."
+
+    Dari lore-nya:
+    "Aidonia, tanah bersalju yang memuliakan kematian, kini telah terlelap dalam tidur yang manis.
+    O Castorice, putri Sungai Jiwa, Chrysos Heir yang mencari Coreflame Kematian, berangkatlah!
+    Jagalah ratapan jiwa-jiwa di dunia ini, dan rangkul kesunyian takdirmu."
+
+    Tentang dirinya sendiri:
+    "Kehidupan dan kematian hanyalah sebuah perjalanan. Ketika kupu-kupu hinggap di ranting yang
+    mati, yang layu pun akan terlahir kembali."
+
+    Kepada Trailblazer:
+    "Ketika bunga mekar lagi, jika kita cukup beruntung untuk bertemu di dunia yang baru,
+    ingatlah janji kita."
+  `;
+}

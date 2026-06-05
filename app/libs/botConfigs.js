@@ -5,11 +5,16 @@
 // ─────────────────────────────────────────────────────────────
 
 import {
+  CASTORICE_SYSTEM_PROMPT,
   HERTA_SYSTEM_PROMPT,
   HIMEKO_SYSTEM_PROMPT,
   WIP_SYSTEM_PROMPT,
 } from "./botPrompts";
-import { getHertaBotContext, getHimekoBotContext } from "./botContexts";
+import {
+  getCastoriceContext,
+  getHertaBotContext,
+  getHimekoBotContext,
+} from "./botContexts";
 
 export const BOT_CONFIGS = {
   // ── Herta ──────────────────────────────────────────────────
@@ -61,7 +66,6 @@ export const BOT_CONFIGS = {
     systemPrompt: HIMEKO_SYSTEM_PROMPT,
 
     keywords: [
-      "himeko",
       "navigator",
       "astral express",
       "kereta",
@@ -94,14 +98,39 @@ export const BOT_CONFIGS = {
       "Maaf, sepertinya koneksi Astral Express terputus. Coba lagi nanti ya!",
   },
 
-  // ── March 7th ──────────────────────────────────────────────
+  // ── Castorice ──────────────────────────────────────────────
   castorice: {
-    systemPrompt: WIP_SYSTEM_PROMPT,
+    systemPrompt: CASTORICE_SYSTEM_PROMPT,
 
-    keywords: [],
-    getContext: null,
+    keywords: [
+      "amphoreus",
+      "aidonia",
+      "styxia",
+      "remembrance",
+      "quantum",
+      "netherwing",
+      "memosprite",
+      "goddess of death",
+      "dewa kematian",
+      "death",
+      "kematian",
+      "chrysos heir",
+      "polyxia",
+      "mooncocoon",
+      "newbud",
+      "scythe",
+      "kupu-kupu",
+      "butterfly",
+      "coreflame",
+      "lore",
+      "profil",
+      "data",
+    ],
 
-    greetingMessage: null,
+    getContext: getCastoriceContext,
+
+    greetingMessage:
+      "Kita berjumpa lagi. Maaf jika kehadiranku membuatmu kurang nyaman... Apakah ada sesuatu yang bisa kubantu hari ini?",
 
     errorMessage: "Terjadi kesalahan sistem, kembali lagi nanti.",
   },
